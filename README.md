@@ -4,6 +4,11 @@ Siddharth Bansal
 Logan Norman
 Anisha Reddy
 Anahita Ahmadi
-Sanjana Illango
+Sanjana Ilango
 Aayushi Agrawal
 Ramneek
+
+
+All of the documentation should go into the documentation folder (like the waterfall methods and BS like that)
+
+Everything else should be added into the Final_Project folder
