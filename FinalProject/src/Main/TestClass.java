@@ -9,4 +9,7 @@ public class TestClass {
 	{
 		System.out.println("WWEWWEWEWE");
 	}
+	public static void sayHi(String name) {
+		System.out.println("Hello there " + name);
+	}
 }
