@@ -9,6 +9,6 @@ public class Main {
 		TestClass.sayHi("Sanjana");
 		
 		webServer webS = new webServer();
-		
+		webS.startWebServer();
 	}
 }
