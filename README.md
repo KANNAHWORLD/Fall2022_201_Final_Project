@@ -25,3 +25,13 @@ Steps to using this repository:
 Becuase Eclipse doesn't have a brain,sometimes you have to refresh the filesystem
 in Eclipse after you git pull because eclipse does not update the new files
 this should just be a rare problem.
+
+
+
+endPoints is going to be the start of the Rest API which will be the backend of the website.
+
+201Website project should be where all the front-end stuff happens. 
+
+If(Confused){ask;}
+
+I hate web dev, its annoying
