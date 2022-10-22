@@ -1,8 +1,8 @@
 # Fall2022_201_Final_Project
 SuperGroup 201 project
 Siddharth Bansal
-Logan Norman
 Anisha Reddy
+Logan Norman
 Anahita Ahmadi
 Sanjana Ilango
 Aayushi Agrawal
