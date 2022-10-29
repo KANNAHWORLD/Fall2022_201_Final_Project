@@ -15,7 +15,7 @@ class CreateProfileJson extends JsonFormats
 	int SexOrient;
 	String insta;
 	String description;
-	Preferences prefered;
+	Preferences preferred;
 	Rank selfRank;
 	Rank preferRanks;
 }
