@@ -28,7 +28,7 @@ public class User {
     }
 	
 	//Retrieves the matches of a person. Requires a simple request 
-	@RequestMapping(value="matches")
+	@RequestMapping(value="/matches")
 	@ResponseBody
 	public String match()
 	{

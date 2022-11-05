@@ -8,17 +8,15 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class EndPointsApplication {
-
 	
-	  @RequestMapping(value="/", method = RequestMethod.GET)
-	  @ResponseBody 
-	  public String home() 
-	  {
-		  System.out.println("Hello World! line hit by requests"); 
-		  return "Hello World!"; 
-	  }
-	 
-
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@ResponseBody
+	public String home()
+	{
+		
+		return "temp return value";
+	}
+	
 	public static void main(String[] args) {
 		SpringApplication.run(EndPointsApplication.class, args);
 	}
