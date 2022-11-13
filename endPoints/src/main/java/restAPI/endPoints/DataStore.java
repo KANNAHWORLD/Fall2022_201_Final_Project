@@ -8,11 +8,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
+// NOTE: WE NEED MIGHT NEED TO MAKE ANOTHER GENERAL GET QUERY THAT RETURNS A JSON
+// THE CURRENT GENERALQUERY ONLY MAKES A QUERY, SOMETHING SIMILAR TO A POST QUERY
+// FEEL FREE TO ADD IF NEEDED
+// MIGHT BE BENEFICIAL TO ADD ABOVE FUNCTION AND HAVE IT RETURN A RESULT SET
 
 public class DataStore 
 {
-	private Connection DBConnection;
+	
+	// Static to make sure that all instances are using the same connection
+	// This could be made to not be 
+	private static Connection DBConnection = null;
   
+	
+	
+	
+	// Main needs to ultimately phased out
+	// its only purpose is to test functionality within the program
 	public static void main(String [] args)
 	{
 		//String URL2 = "jdbc:mysql:/35.185.234.102:3306/test201";
@@ -37,18 +49,20 @@ public class DataStore
 		DataStore ds = new DataStore();
 		
 		//Creates Schema "testSchema"
-		ds.generalQuery("CREATE SCHEMA testSchema");
+		ds.noexceptQuery("CREATE SCHEMA testSchema");
 		
 		// TODO: add code here for testing
 		
-		ds.generalQuery("CREATE TABLE herro(number INT)");
-		ds.generalQuery("INSERT INTO herro VALUES (50)");
+		ds.noexceptQuery("CREATE TABLE testSchema.herro(number INT)");
+		ds.noexceptQuery("INSERT INTO testSchema.herro VALUES (50)");
 		
 		//Deletes the Schema
-		ds.generalQuery("DROP SCHEMA testSchema");
+		ds.noexceptQuery("DROP SCHEMA testSchema");
 	}
 	
 	// IGNORE FOR NOW
+	// Eventually we want to somehow link this constructor to the google cloud
+	// cloud sql instance
 	DataStore(String URL)
 	{
 		try {
@@ -95,6 +109,7 @@ public class DataStore
 
 	}
 
+	
 	DataStore()
 	{
 		
@@ -103,13 +118,22 @@ public class DataStore
 		// GO TO DBConstants AND CHANGE TO YOUR PERSONAL SQL USERNAMES AND PASSWORDS!!!!!!!
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
+		// TO PREVENT Multiple connections being made and overriding 
+		// DBConnection. So that its value is only set once upon initializing 
+		// DataStore
+		if(DBConnection != null)
+		{
+			return;
+		}
 		
 		// Initializes a connection to the database, and assigns it to DBConnection variable
 		// to be use by other member functions
+
+		
 		try {
 			Connection conn = DriverManager.getConnection
 					("jdbc:mysql://localhost:3306", DBConstants.UserName, DBConstants.Password);
-			DBConnection = conn;
+			DataStore.DBConnection = conn;
 			conn.createStatement();
 			
 		} catch (SQLException e) {
@@ -143,7 +167,22 @@ public class DataStore
 		return new JsonFormats();
 	}
 	
-	public void generalQuery(String query)
+	
+	
+	// General query should become a private member function eventually
+	// throws exception so that we know whether or not a query went through
+	public void generalQuery(String query) throws SQLException
+	{
+		Statement st = null;
+		st = DBConnection.createStatement();
+		st.execute(query);
+	}
+	
+	
+	// This should be used for testing certain statements
+	// Use generalQuery for all other integrations 
+	// Basically you can make any query with this
+	public void noexceptQuery(String query)
 	{
 		Statement st = null;
 		try {
@@ -155,4 +194,72 @@ public class DataStore
 		}
 		
 	}
+
+	
+	// Simply creates the profile in the Database,
+	// so far does not throw exceptions
+	public JsonFormats createProfile(CreateProfileJson CPJ)
+	{
+		// Create the SQL Statements for CPJ
+		// Check JsonForats.java, CreateProfileJson class for 
+		// data members to be added to the database
+		
+		// Temporary place holder
+		// Build the query string here
+		String query = "";
+		
+		// call generalQuery with the string built here
+		// error is catched here, and either error code is returned,
+		// or some other handling will happen
+		try {
+			generalQuery(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return new JsonFormats(417);
+		}
+		return new JsonFormats(200);
+	}
+
+	
+	// In this section, we will just query based on the profile we want
+	// 
+	public JsonFormats getProfile(JsonFormats JF)
+	{
+		//
+		
+		//Placeholder
+		
+		String query = "";
+		
+		// Placeholder, function might need to be changed
+		// later on
+		try {
+			generalQuery(query);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		
+		
+		return new JsonFormats();
+	}
+
+	// currently returns void, might be needed to change later on
+	// Mgiht need to change the function parametere
+	// Might return result set
+	public void authorize(JsonFormats JF)
+	{
+		//place holder
+		String query = "";
+		
+		// might need to change function
+		try {
+			generalQuery(query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }
