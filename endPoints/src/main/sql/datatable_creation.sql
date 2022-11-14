@@ -4,6 +4,14 @@ DROP TABLE IF EXISTS UserDesiresRanking;
 DROP TABLE IF EXISTS UserLogin;
 DROP TABLE IF EXISTS UserSelfRanking;
 
+# Might need to delete these if not needed? -Sid
+# creates a schema and uses the so that all below will work on a specific database
+DROP DATABASE IF EXISTS UserDatabase;
+CREATE DATABASE UserDatabase;
+USE UserDatabase;
+# 
+
+
 CREATE TABLE UserLogin (
 FirstName varchar(255), 
 LastName varchar(255),
