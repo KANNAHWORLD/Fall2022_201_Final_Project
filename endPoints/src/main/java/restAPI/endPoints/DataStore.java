@@ -1,5 +1,11 @@
 package restAPI.endPoints;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -20,8 +26,6 @@ public class DataStore
 	// This could be made to not be 
 	private static Connection DBConnection = null;
   
-	
-	
 	
 	// Main needs to ultimately phased out
 	// its only purpose is to test functionality within the program
@@ -49,16 +53,17 @@ public class DataStore
 		DataStore ds = new DataStore();
 		
 		//Creates Schema "testSchema"
-		ds.noexceptQuery("CREATE SCHEMA testSchema");
-		
-		// TODO: add code here for testing
-		
-		ds.noexceptQuery("CREATE TABLE testSchema.herro(number INT)");
-		ds.noexceptQuery("INSERT INTO testSchema.herro VALUES (50)");
-		
-		//Deletes the Schema
-		ds.noexceptQuery("DROP SCHEMA testSchema");
+//		ds.noexceptQuery("CREATE SCHEMA testSchema");
+//		
+//		// TODO: add code here for testing
+//		
+//		ds.noexceptQuery("CREATE TABLE testSchema.herro(number INT)");
+//		ds.noexceptQuery("INSERT INTO testSchema.herro VALUES (50)");
+//		
+//		//Deletes the Schema
+//		ds.noexceptQuery("DROP SCHEMA testSchema");
 	}
+	
 	
 	// IGNORE FOR NOW
 	// Eventually we want to somehow link this constructor to the google cloud
@@ -109,7 +114,7 @@ public class DataStore
 
 	}
 
-	
+	// Uses initializeDatabase()
 	DataStore()
 	{
 		
@@ -135,6 +140,9 @@ public class DataStore
 					("jdbc:mysql://localhost:3306", DBConstants.UserName, DBConstants.Password);
 			DataStore.DBConnection = conn;
 			conn.createStatement();
+			
+			// Initialzie database
+			initializeDatabase();
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -165,6 +173,101 @@ public class DataStore
 		
 		
 		return new JsonFormats();
+	}
+	
+	
+	// To default initialize a database
+	// Defualt file
+	//				sql/datatable_creation.sql
+	// _______________________________________
+	
+	// Should be called by default constructor
+	private void initializeDatabase()
+	{
+		String defaultPath = "src/main/sql/datatable_creation.sql";
+		try {
+			
+			File file = new File(defaultPath);
+			BufferedReader pass = new BufferedReader(new FileReader(file));
+			scriptExecutor(pass);
+			pass.close();
+			
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			System.out.println("File not read, not\nDatabase not created");
+		} catch (IOException e) {
+			System.out.println("File not closed");
+			e.printStackTrace();
+		}
+	}
+	
+	// To initialize a database from a custom script
+	// Provide a file directory/file name and reader will automatically created and passed
+	// to scriptExecutor
+	@SuppressWarnings("unused")
+	private void customInitializeDatabase(String scriptLocation)
+	{
+		try {
+			
+			BufferedReader pass = new BufferedReader(new FileReader(scriptLocation));
+			scriptExecutor(pass);
+			pass.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File not read\nDatabase not created");
+			e.printStackTrace();
+		} catch (IOException e) {
+			System.out.println("File not closed");
+			e.printStackTrace();
+		}
+	}
+	
+	
+	// Executes a script from a .sql file
+	// Parameter is a filereader that should be able to read in SQL lines
+	// from SQL files
+	// Uses noexceptQuery(String)
+	// Script to SQL Files and execute them
+	private void scriptExecutor(BufferedReader file)
+	{
+		String reading = "";
+		String query = "";
+		
+		try {
+			while((reading = file.readLine()) != null)
+			{
+				//System.out.println(reading);
+				if(reading.isEmpty())
+				{
+					continue;
+				}
+				else if(reading.charAt(0) == '#')
+				{
+					reading = null;
+					continue;
+				}
+				else if(reading.charAt(reading.length()-1) != ';')
+				{
+					query += reading + " ";
+					continue;
+				}
+				
+				query += reading;
+				
+				noexceptQuery(query);
+				
+				// Debug purposes
+				// System.out.println(query);
+				//
+				
+				reading = null;
+				query = "";
+			}
+		} catch (IOException e) {
+			System.out.println("There was a problem in somewhere");
+			e.printStackTrace();
+		}
+		System.out.println("Database Created");
 	}
 	
 	
