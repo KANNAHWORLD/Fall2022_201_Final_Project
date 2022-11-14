@@ -1,8 +1,8 @@
-DROP TABLE IF EXISTS UserInfo;
-DROP TABLE IF EXISTS UserPreferenceList;
-DROP TABLE IF EXISTS UserDesiresRanking;
-DROP TABLE IF EXISTS UserLogin;
-DROP TABLE IF EXISTS UserSelfRanking;
+# DROP TABLE IF EXISTS UserInfo;
+# DROP TABLE IF EXISTS UserPreferenceList;
+# DROP TABLE IF EXISTS UserDesiresRanking;
+# DROP TABLE IF EXISTS UserLogin;
+# DROP TABLE IF EXISTS UserSelfRanking;
 
 # Might need to delete these if not needed? -Sid
 # creates a schema and uses the so that all below will work on a specific database
@@ -63,7 +63,7 @@ VALUES ("Sid", "Bansal", 5, 2, 3, 3, 4, 4, 3, 4, 5, 5),
 ("Sanjana", "Ilango", 3, 4, 3, 4, 5, 2, 3, 3, 4, 5);
 
 
-CREATE TABLE UserSelfsRanking (
+CREATE TABLE UserSelfRanking (
 FirstName varchar(255), 
 LastName varchar(255), 
 Extroverted int,
