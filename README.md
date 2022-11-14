@@ -9,7 +9,7 @@ Aayushi Agrawal
 Ramneek
 
 
-All of the documentation should go into the documentation folder (like the waterfall methods and BS like that)
+All of the documentation should go into the documentation folder
 
 Everything else should be added into the Final_Project folder
 
@@ -33,5 +33,3 @@ endPoints is going to be the start of the Rest API which will be the backend of 
 201Website project should be where all the front-end stuff happens. 
 
 If(Confused){ask;}
-
-I hate web dev, its annoying
