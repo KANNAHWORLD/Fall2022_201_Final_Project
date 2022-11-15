@@ -318,7 +318,7 @@ public class DataStore
 	public ResultSet getQuery(String query) {
 		
 		try {
-			Statement st = DBConnection.createStatement();
+			Statement st = DBConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			ResultSet ret = st.executeQuery(query);
 			if(!ret.next())
 			{
@@ -380,9 +380,12 @@ public class DataStore
 		// Then, the percent signs are filled with the parameters
 		// by doing .format
 		
+		
+		// ESCAPE CHARACTERS ARE NECESSARY FOR CONDITIONS!!!!!!!
+		
 		String Components = "FirstName, LastName, username";
 		String Table = "UserLogin";
-		String Conditions = "FirstName=%s OR LastName=%s OR FirstName=%s OR LastName=%s";
+		String Conditions = "FirstName=\"%s\" OR LastName=\"%s\" OR FirstName=\"%s\" OR LastName=\"%s\"";
 		
 		String query = "SELECT " + Components + " FROM " + Table + " WHERE " + Conditions + ";";
 		query = String.format(query, JF.FirstName, JF.FirstName, JF.LastName, JF.LastName);
