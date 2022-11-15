@@ -12,8 +12,11 @@ public class User {
 	//This request is going to find someone's profile
 	@RequestMapping(value="/profile", method = RequestMethod.GET)
 	@ResponseBody
-	public String profileCreation()
+	public String findProfile(@RequestBody Profiles request)
 	{
+		
+		
+		
 		return "Profile Creation";
 	}
 	

@@ -12,6 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 
 // NOTE: WE NEED MIGHT NEED TO MAKE ANOTHER GENERAL GET QUERY THAT RETURNS A JSON
@@ -51,6 +52,16 @@ public class DataStore
 		// Deletes the schema, then creates a new one at each instance
 		// might be usefule for testing functionality and writing specific code
 		DataStore ds = new DataStore();
+		
+		Profiles test = new Profiles();
+		test.FirstName = "Sid";
+		
+		ProfileWrapper PW = ds.getProfile(test);
+		
+		for(Profiles x : PW.profiles)
+		{
+			System.out.println(x.FirstName + x.LastName + x.UserName);
+		}
 		
 		//Creates Schema "testSchema"
 //		ds.noexceptQuery("CREATE SCHEMA testSchema");
@@ -150,22 +161,20 @@ public class DataStore
 		
 	}
 	
-	JsonFormats getQuery(String query)
-	{
-		PreparedStatement ps = null;
-		ResultSet rs = null;
-		
-		try {
-			ps = DBConnection.prepareStatement(query);
-			rs = ps.executeQuery();
-		} catch (SQLException e) {
-			JsonFormats jf = new JsonFormats();
-			jf.statusCode = 404;
-			return jf;
-		}
-		
-		return new JsonFormats();
-	}
+	
+	//////////////////////
+	//Deprecated ///////////
+	////////////////////
+	/*
+	 * JsonFormats getQuery(String query) { PreparedStatement ps = null; ResultSet
+	 * rs = null;
+	 * 
+	 * try { ps = DBConnection.prepareStatement(query); rs = ps.executeQuery(); }
+	 * catch (SQLException e) { JsonFormats jf = new JsonFormats(); jf.statusCode =
+	 * 404; return jf; }
+	 * 
+	 * return new JsonFormats(); }
+	 */
 	
 	JsonFormats postQuery(JsonFormats jfmt)
 	{
@@ -271,7 +280,9 @@ public class DataStore
 	}
 	
 	
-	
+	///////////////////////////////
+	// Both below like POST queries
+////////	
 	// General query should become a private member function eventually
 	// throws exception so that we know whether or not a query went through
 	public void generalQuery(String query) throws SQLException
@@ -297,7 +308,43 @@ public class DataStore
 		}
 		
 	}
-
+//////////////
+	// Above like POST query
+	
+	
+	
+	// Below like GET query
+//////////////
+	public ResultSet getQuery(String query) {
+		
+		try {
+			Statement st = DBConnection.createStatement();
+			ResultSet ret = st.executeQuery(query);
+			if(!ret.next())
+			{
+				System.out.println("Empty result set");
+				return null;
+			}
+			else
+			{
+				ret.beforeFirst();
+			}
+			return ret;
+		} catch (SQLException e) {
+			System.out.println("There was an error in the query");
+			e.printStackTrace();
+		}
+		
+		// Just here to make the compiler SHUT up
+		return null;
+	}
+	
+	
+/////////////
+	// Above like GET query
+	///////////////////////
+	
+	
 	
 	// Simply creates the profile in the Database,
 	// so far does not throw exceptions
@@ -325,31 +372,54 @@ public class DataStore
 
 	
 	// In this section, we will just query based on the profile we want
-	// 
-	public JsonFormats getProfile(JsonFormats JF)
+	// It will only return name and password
+	// Needs a first name or last name
+	public ProfileWrapper getProfile(Profiles JF)
 	{
-		//
+		// Builds the SQL statement before it is queried
+		// Then, the percent signs are filled with the parameters
+		// by doing .format
 		
-		//Placeholder
+		String Components = "FirstName, LastName, username";
+		String Table = "UserLogin";
+		String Conditions = "FirstName=%s OR LastName=%s OR FirstName=%s OR LastName=%s";
 		
-		String query = "";
+		String query = "SELECT " + Components + " FROM " + Table + " WHERE " + Conditions + ";";
+		query = String.format(query, JF.FirstName, JF.FirstName, JF.LastName, JF.LastName);
 		
-		// Placeholder, function might need to be changed
-		// later on
-		try {
-			generalQuery(query);
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		ResultSet set = getQuery(query);
+		
+		if(set.equals(null))
+		{
+			return new ProfileWrapper(404);
 		}
 		
+		ProfileWrapper ret = new ProfileWrapper();
+		Profiles addition = new Profiles();
 		
+		// Basically goes through the entire result set and finds all of the data
+		// which gets added to the ProfilesWrapper which would eventually be sent 
+		// to the front-end.
 		
-		return new JsonFormats();
+		// Finds all of the profiles that match with the name/last name provided
+		try {
+			while(set.next())
+			{
+				addition = new Profiles();
+				addition.FirstName = set.getString("FirstName");
+				addition.LastName = set.getString("LastName");
+				addition.UserName = set.getString("username");
+				ret.profiles.add(addition);
+			}
+		} catch (SQLException e) {
+			System.out.println("There was a problem b/c you are a bad programmer");
+			e.printStackTrace();
+		}
+		return ret;
 	}
 
 	// currently returns void, might be needed to change later on
-	// Mgiht need to change the function parametere
+	// Might need to change the function parameter
 	// Might return result set
 	public void authorize(JsonFormats JF)
 	{

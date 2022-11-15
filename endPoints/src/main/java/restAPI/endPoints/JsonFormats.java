@@ -9,8 +9,6 @@ import java.util.ArrayList;
 
 public class JsonFormats {
 	public int statusCode;
-	
-	
 	// just to create this so that
 	// status code is just set easily
 	public JsonFormats(int code)
@@ -42,6 +40,25 @@ class MatchObject extends BasicInfo
 class Matches extends BasicInfo
 {
 	ArrayList<MatchObject> matches;
+}
+
+class ProfileWrapper extends JsonFormats
+{
+	public ArrayList<Profiles> profiles = new ArrayList<Profiles>();
+	ProfileWrapper(int code)
+	{
+		super(code);
+	}
+	ProfileWrapper()
+	{
+	}
+}
+
+class Profiles
+{
+	public String FirstName;
+	public String LastName;
+	public String UserName;
 }
 
 
