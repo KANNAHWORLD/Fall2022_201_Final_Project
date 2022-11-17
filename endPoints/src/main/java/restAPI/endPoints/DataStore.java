@@ -176,6 +176,9 @@ public class DataStore
 	 * return new JsonFormats(); }
 	 */
 	
+	
+	// Below currently not in use/ not implemented
+	// function will eventually be sent to hell
 	JsonFormats postQuery(JsonFormats jfmt)
 	{
 		
@@ -231,12 +234,13 @@ public class DataStore
 		}
 	}
 	
-	
+	//////////////////
 	// Executes a script from a .sql file
 	// Parameter is a filereader that should be able to read in SQL lines
 	// from SQL files
 	// Uses noexceptQuery(String)
 	// Script to SQL Files and execute them
+	//////////////
 	private void scriptExecutor(BufferedReader file)
 	{
 		String reading = "";
@@ -282,9 +286,11 @@ public class DataStore
 	
 	///////////////////////////////
 	// Both below like POST queries
-////////	
+	////////	
 	// General query should become a private member function eventually
 	// throws exception so that we know whether or not a query went through
+	// Used by CreateProfile
+	///////////////////////////
 	public void generalQuery(String query) throws SQLException
 	{
 		Statement st = null;
@@ -308,13 +314,16 @@ public class DataStore
 		}
 		
 	}
-//////////////
+	//////////////
 	// Above like POST query
+	////////////////////////////////////
 	
-	
-	
+	///////////////////////////////
 	// Below like GET query
-//////////////
+	//////////////
+	//
+	//
+	// RETURNS NULL IF THE RESULT SET IS EMPTY!!
 	public ResultSet getQuery(String query) {
 		
 		try {
@@ -339,41 +348,156 @@ public class DataStore
 		return null;
 	}
 	
-	
-/////////////
+	/////////////
 	// Above like GET query
 	///////////////////////
 	
 	
+	// TODO:
+	
+	
+	/////// IMPORTANT //////////////
+	// createProfile() needs to be adjusted once the databases uses UserName and Password
+	// instead of just FirstName and LastName. Two queries specifically need to be changed
+	// The user's selfRank data table also needs to be changed once it is decided the format
+	// of the table
+	///////////// IMPORTANT ///////////////////////
+	
 	
 	// Simply creates the profile in the Database,
-	// so far does not throw exceptions
+	// does not throw exceptions
+	// returns the input Json Format but edits the ServerMessage and StatusCode if successful
+	// returns a new JsonFormat if failed
 	public JsonFormats createProfile(CreateProfileJson CPJ)
 	{
 		// Create the SQL Statements for CPJ
 		// Check JsonForats.java, CreateProfileJson class for 
 		// data members to be added to the database
 		
-		// Temporary place holder
-		// Build the query string here
-		String query = "";
+		///////////////////////////////////////////////////////////////////////
+		// query to check if the profile already exists
 		
-		// call generalQuery with the string built here
-		// error is catched here, and either error code is returned,
-		// or some other handling will happen
-		try {
-			generalQuery(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return new JsonFormats(417);
+		String exists;
+		
+		String tables = "UserLogin";
+		String fields = "username, password";
+		String conditions = "username = \"%s\" AND password = \"%s\"";
+		
+		conditions = String.format(conditions, CPJ.UserName, CPJ.Password);
+		
+		exists = "SELECT " + fields + " FROM " + tables + " WHERE " + conditions + ";";
+		ResultSet rs = getQuery(exists);
+		
+		if(!rs.equals(null))
+		{
+			return new JsonFormats(417, "Profile either exists or username is taken");
 		}
-		return new JsonFormats(200);
+		
+		// LastQuery is there for the purposes of checking which query
+		// was the last query before the SQL failed
+		String LastQuery = null;
+		
+		
+		// TODO:
+		// IMPORTANT //////////////////////
+		// Goes ahead and queries each data table
+		// and inserts the appropriate information
+		// 3/4 need to be readjusted once the tables format has been changed
+		// IMPORTANT //////////////////////
+		
+		try
+		{
+			/////////////////////////////////////////////////////////////////////////////
+	
+			/////////////////////////////////////////////////////////////////////////////
+			// Inputs the information to the UserLogin table
+			// Build the query string here
+			String query = "";
+			tables = "UserLogin";
+			String values = "VALUES(\"%s\",\"%s\",\"%s\",\"%s\")";
+			values = String.format(values, CPJ.first, CPJ.last, CPJ.UserName, CPJ.Password);
+			query = "INSERT INTO " + tables + " " + values + ";";
+			LastQuery = query;
+			generalQuery(query);
+			
+			// Should be properly inserted above
+			////////////////////////////////////////////////////////////////////////////////
+			
+			
+			///////////////////////////////////////////////////////////////////////////////
+			// Inputs the information into UserInfo table
+			
+			tables = "UserInfo";
+			values = "VALUES(\"%s\",\"%s\",\"%i\",\"%i\",\"%s\",\"%s\")";
+			values = String.format(values, CPJ.first, CPJ.last, CPJ.age, CPJ.SexOrient, CPJ.insta, CPJ.description);
+			query = "INSERT INTO " + tables + " " + values + ";";
+			LastQuery = query;
+			generalQuery(query);
+			
+			//Should be inserted into UserInfo
+			/////////////////////////////////////////////////////////////////////////////////
+			
+			
+			
+			/////////// IMPORTANT //////////////////
+			// BELOW NEEDS TO BE FIXED BECAUSE WE DO NOT KNOW HOW TO STORE THE THINGS BELOW
+			//////////// IMPORTANT //////////////////
+			
+			
+			///////////////////////////////////////////////////////////////////////////////
+			// Inputs the information into UserPrference table
+			
+			tables = "UserPreferences";
+			values = "VALUES(\"%s\",\"%s\",\"%i\",\"%i\",\"%s\",\"%s\")";
+			values = String.format(values, CPJ.first, CPJ.last, CPJ.age, CPJ.SexOrient, CPJ.insta, CPJ.description);
+			query = "INSERT INTO " + tables + " " + values + ";";
+			LastQuery = query;
+			generalQuery(query);
+			
+			//Should be inserted into UserPreferenceList
+			/////////////////////////////////////////////////////////////////////////////////
+			
+			
+			/////////////// IMPORTANT ///////////////////////////
+			/// BElOW NEEDS TO ADD SUPPORT FOR USERNAMES INSTEAD OF FIRST/LASTNAME
+			////////////// IMPORTANT ////////////////////////////
+			
+	
+			///////////////////////////////////////////////////////////////////////////////
+			// Inputs the information into UserDesiresRanking table
+			
+			tables = "UserDesiresRanking";
+			values = "VALUES(\"%s\", \"%s\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\" )";
+			values = String.format(values, CPJ.first, CPJ.last, CPJ.selfRank.extroverted, CPJ.selfRank.humor, CPJ.selfRank.adventure,
+					CPJ.selfRank.ambition, CPJ.selfRank.artistic, CPJ.selfRank.wOfAff, CPJ.selfRank.physTouch, CPJ.selfRank.gifts,
+					CPJ.selfRank.qualTime, CPJ.selfRank.service);
+			query = "INSERT INTO " + tables + " " + values + ";";
+			LastQuery = query;
+			generalQuery(query);
+			
+			//Should be inserted into UserDesiresRanking table
+			/////////////////////////////////////////////////////////////////////////////////
+		}
+		catch (SQLException SQLE)
+		{
+			System.out.println("There was an error in the insertion somewhere somehow. This was the "
+					+ "Last Query Executed:\n" + LastQuery + "\n");
+			return new JsonFormats(417, "SQL Query failed during profile Creation");
+			
+		}
+		
+		CPJ.ServerMessage = "The Profile Has been Created";
+		CPJ.statusCode = 200;
+		return CPJ;
 	}
 
 	
 	// In this section, we will just query based on the profile we want
 	// It will only return name and password
 	// Needs a first name or last name
+	// 
+	//  POSSIBLY COMPLETE
+	//
 	public ProfileWrapper getProfile(Profiles JF)
 	{
 		// Builds the SQL statement before it is queried
@@ -398,7 +522,7 @@ public class DataStore
 		}
 		
 		ProfileWrapper ret = new ProfileWrapper();
-		Profiles addition = new Profiles();
+		Profiles addition = null; //new Profiles();
 		
 		// Basically goes through the entire result set and finds all of the data
 		// which gets added to the ProfilesWrapper which would eventually be sent 
@@ -418,6 +542,7 @@ public class DataStore
 			System.out.println("There was a problem b/c you are a bad programmer");
 			e.printStackTrace();
 		}
+		ret.statusCode = 200;
 		return ret;
 	}
 

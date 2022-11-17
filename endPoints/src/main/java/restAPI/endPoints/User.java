@@ -9,46 +9,55 @@ public class User {
 	
 	DataStore DBInstance = new DataStore();
 	
-	//This request is going to find someone's profile
+	// BELOW SHOULD BE DONE
+	//
+	// This request is going to find someone's profile
+	// This is intended to be used to search profiles
+	// given only a single. This will try it's best to find 
+	// as many relevant profiles as possible.
+	// There could be a value for last name or first name
 	@RequestMapping(value="/profile", method = RequestMethod.GET)
 	@ResponseBody
-	public String findProfile(@RequestBody Profiles request)
+	public ProfileWrapper findProfile(@RequestBody Profiles request)
 	{
-		
-		
-		
-		return "Profile Creation";
+		// Calls DBInstance to find all of the profiles
+		// check DataStore.java to see what the function does
+		ProfileWrapper retWrapper = DBInstance.getProfile(request);
+		return retWrapper;
 	}
 	
 	
-	
-	
-	
-	
-	
+	// TODO:
 	//This section will create a new profile for the person. It takes in Json formatted data
 	// Queries database, and returns something back, just use your brain
 	@RequestMapping(value="/createProfile", method = RequestMethod.GET)
 	@ResponseBody
-    public String createProfile(@RequestBody CreateProfileJson CPJ) 
+    public CreateProfileJson createProfile(@RequestBody CreateProfileJson CPJ) 
 	{
 		//Database Query needs to be done with this
 		
-		DBInstance.createProfile(CPJ);
+		// Once the query is over
+		// endRes will have an error code and a ServerMessage, both of which will be sent
+		// back to the front end along with the original content of the queried Json
+		CreateProfileJson endRes = (CreateProfileJson) DBInstance.createProfile(CPJ);
+		
 		
 		// We need to figure out what to send back, consult design documents
+		System.out.println("CreateProfile Function was hit!");
 		
-		System.out.println("Hello World! line hit by requests");
-        return "Hello World!";
+		return endRes;
     }
 	
 	
-	
-	
-	
-	
+	// TODO:
 	//Retrieves the matches of a person. This might be a tough one to implement
+	//
+	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+	//
 	// Need AAYUSHI and ANISHA consultation
+	// WE SHOULD INCORPORATE MULTITHREDDING HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	//
+	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 	@RequestMapping(value="/matches")
 	@ResponseBody
 	
@@ -63,7 +72,7 @@ public class User {
 		return "Matching";
 	}
 	
-	
+	// TODO:
 	// This right here is supposed get someone's profile
 	// still needs work, not really sure how to implement this currently
 	public JsonFormats getProfile(JsonFormats JF)
@@ -71,8 +80,9 @@ public class User {
 		return new JsonFormats();
 	}
 	
-	
-	
+	// 
+	// RANDOM TEST ENDPOINT, NEEDS TO BE DEPRECATED EVENTUALLY
+	//
 	// This was just for testing purposes, should be eventually phased out or made private
 	@RequestMapping(value="/test", method = RequestMethod.POST)
 	@ResponseBody

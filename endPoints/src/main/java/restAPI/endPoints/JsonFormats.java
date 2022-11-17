@@ -16,9 +16,18 @@ public class JsonFormats {
 		statusCode = code;
 	}
 	
+	// Constructor so that you can 
+	// add a description from the constructor
+	public JsonFormats(int code, String desc)
+	{
+		statusCode = code;
+		ServerMessage = desc;
+	}
+	
 	// so that errors will shut-up
 	public JsonFormats(){}
 
+	public String ServerMessage;
 }
 
 // some bio information
@@ -64,6 +73,8 @@ class Profiles
 
 class CreateProfileJson extends BasicInfo
 {
+	public String UserName;
+	public String Password;
 	public Preferences prefered;
 	public Rank selfRank;
 	public Rank preferRanks;
@@ -76,7 +87,7 @@ class Preferences
 
 class Rank
 {
-	public int introverted;
+	public int extroverted;
 	public int humor;
 	public int adventure;
 	public int ambition;
