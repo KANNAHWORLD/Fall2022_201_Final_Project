@@ -53,6 +53,9 @@ public class DataStore
 		// might be usefule for testing functionality and writing specific code
 		DataStore ds = new DataStore();
 		
+		////////////////////////////
+		// TESTS getProfile function
+		// Working!
 		Profiles test = new Profiles();
 		test.FirstName = "Sid";
 		
@@ -62,6 +65,31 @@ public class DataStore
 		{
 			System.out.println(x.FirstName + x.LastName + x.UserName);
 		}
+		
+		/////////////////////////////
+		
+		
+		
+		/////////////////////
+		// CreateProfile Test
+		// Status? In progress
+		CreateProfileJson CPJ = new CreateProfileJson(34);
+		ds.createProfile(CPJ);
+		System.out.println(CPJ.ServerMessage);
+		
+		System.out.println("HERE");
+		
+		String query = "SELECT FirstName FROM UserLogin WHERE username=\"" + CPJ.UserName + "\";";
+		ResultSet test2 = ds.getQuery(query);
+		
+		try {
+			test2.next();
+			System.out.println(test2.getString("FirstName"));
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		////////////////////
+		
 		
 		//Creates Schema "testSchema"
 //		ds.noexceptQuery("CREATE SCHEMA testSchema");
@@ -361,6 +389,9 @@ public class DataStore
 	// instead of just FirstName and LastName. Two queries specifically need to be changed
 	// The user's selfRank data table also needs to be changed once it is decided the format
 	// of the table
+	//
+	// FORMAT SPECIFIER NOT WORKING FOR INTEGERS !!!!!!!!!!!
+	//
 	///////////// IMPORTANT ///////////////////////
 	
 	
@@ -388,7 +419,7 @@ public class DataStore
 		exists = "SELECT " + fields + " FROM " + tables + " WHERE " + conditions + ";";
 		ResultSet rs = getQuery(exists);
 		
-		if(!rs.equals(null))
+		if(rs != null)
 		{
 			return new JsonFormats(417, "Profile either exists or username is taken");
 		}
@@ -483,6 +514,12 @@ public class DataStore
 			System.out.println("There was an error in the insertion somewhere somehow. This was the "
 					+ "Last Query Executed:\n" + LastQuery + "\n");
 			return new JsonFormats(417, "SQL Query failed during profile Creation");
+			
+		} 
+		catch (Exception GeneralException)
+		{
+			System.out.println("Some other exception was hit\n");
+			GeneralException.printStackTrace();
 			
 		}
 		

@@ -73,15 +73,68 @@ class Profiles
 
 class CreateProfileJson extends BasicInfo
 {
+	CreateProfileJson(){
+		selfRank = new Rank();
+		preferRank = new Rank();
+		prefered = new Preferences();
+	}
+	
+	// Constructor for testing
+	// basicall adds garbage data
+	CreateProfileJson(int as)
+	{
+		selfRank = new Rank();
+		preferRank = new Rank();
+		prefered = new Preferences();
+		
+		first = "sid";
+		last = "bansal";
+		age = 69;
+		SexOrient = 420;
+		insta = "Kill me";
+		description = "AAAHHHHH";
+		UserName = "Sloth";
+		Password = "Stick";
+		
+		selfRank.extroverted = 3;
+		selfRank.humor = 3;
+		selfRank.adventure = 3;
+		selfRank.ambition = 3;
+		selfRank.artistic = 3;
+		selfRank.wOfAff = 3;
+		selfRank.physTouch = 3;
+		selfRank.gifts = 3;
+		selfRank.qualTime = 3;
+		selfRank.service = 3;
+		
+		preferRank.extroverted = 3;
+		preferRank.humor = 3;
+		preferRank.adventure = 3;
+		preferRank.ambition = 3;
+		preferRank.artistic = 3;
+		preferRank.wOfAff = 3;
+		preferRank.physTouch = 3;
+		preferRank.gifts = 3;
+		preferRank.qualTime = 3;
+		preferRank.service = 3;
+		
+		
+	}
+	
+	
 	public String UserName;
 	public String Password;
 	public Preferences prefered;
 	public Rank selfRank;
-	public Rank preferRanks;
+	public Rank preferRank;
 }
 
 class Preferences
 {
+	Preferences()
+	{
+		people = new ArrayList<String>();
+	}
 	ArrayList<String> people;
 }
 
