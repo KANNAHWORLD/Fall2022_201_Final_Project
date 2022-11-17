@@ -638,8 +638,27 @@ public class DataStore
 	public void authorize(JsonFormats JF)
 	{
 		//place holder
-		String query = "";
+		//String Components = "FirstName, LastName, username";
+		String Components = "UserLogin, UserPassword";
+		String Table = "UserLogin";
+		String Conditions = "UserLogin=\"%s\" AND UserPassword=\"%s\"";
+		//String Conditions = "FirstName=\"%s\" OR LastName=\"%s\" OR FirstName=\"%s\" OR LastName=\"%s\"";
 		
+		String query = "SELECT " + Components + " FROM " + Table + " WHERE " + Conditions + ";";
+		query = String.format(query, JF.UserLogin, JF.UserPassword);
+		
+		ResultSet set = getQuery(query);
+
+		if(set.equals(null))
+		{
+			return "Profile not found";
+		}
+
+		ProfileWrapper ret = new ProfileWrapper();
+		Profiles addition = new Profiles();
+
+		
+
 		// might need to change function
 		try {
 			generalQuery(query);
