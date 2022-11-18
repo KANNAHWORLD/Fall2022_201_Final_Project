@@ -16,7 +16,7 @@ public class User {
 	// given only a single. This will try it's best to find 
 	// as many relevant profiles as possible.
 	// There could be a value for last name or first name
-	@RequestMapping(value="/profile", method = RequestMethod.GET)
+	@RequestMapping(value="/profiles", method = RequestMethod.GET)
 	@ResponseBody
 	public ProfileWrapper findProfile(@RequestBody Profiles request)
 	{
@@ -75,6 +75,10 @@ public class User {
 	// TODO:
 	// This right here is supposed get someone's profile
 	// still needs work, not really sure how to implement this currently
+	// gets a single profile, not multiple Profiles
+	// Needs a username, otherwise it does not work
+	// returns the entire person's Stuff including their rankings/bio/name/etc.
+	// should be implemented sometime by saturday
 	public JsonFormats getProfile(JsonFormats JF)
 	{
 		return new JsonFormats();
