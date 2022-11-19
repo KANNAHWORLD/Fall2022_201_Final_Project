@@ -7,6 +7,7 @@ Anahita Ahmadi
 Sanjana Ilango
 Aayushi Agrawal
 Ramneek
+Angela Steinmetz
 
 
 All of the documentation should go into the documentation folder
