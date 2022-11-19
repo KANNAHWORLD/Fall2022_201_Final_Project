@@ -48,6 +48,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="logo" alt="logo" />
       </header>
+      <form>
       <body className="Main-body">
         <div className="Title">
           Profile
@@ -118,6 +119,11 @@ function App() {
           </label>
         </form>
 
+        <br/>
+
+        <div className="Title">
+          Personality Questionnaire
+        </div>
 
         <div className = "App-sq">
           <h4 className="InlineStart">
@@ -384,12 +390,13 @@ function App() {
             </li>
           </ul>
         </div>
-
       </body>
+      </form>
+      <input type="submit" className="continue-button" value="Continue"/>
 
       <br/>
       <br/>
-
+      
     </div>
   );
 }

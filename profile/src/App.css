@@ -1,3 +1,26 @@
+.continue-button{
+  width: 150px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+  margin:auto;
+  display:flex;
+  background-color: #CD5C5C;
+  border: none;
+  border-radius: 4px;
+
+  font-family: 'Comfortaa', cursive;
+  font-size: 20px;
+}
+
+.continue-button:hover{
+  cursor: pointer;
+}
+
+h4{
+  font-family: 'Comfortaa', cursive;
+}
+
 ul {
   list-style: none;
   text-align: center;
@@ -7,6 +30,7 @@ ul {
   padding-inline-start: 0px;
   justify-content: center;
   align-items: center;
+  font-family: 'Comfortaa', cursive;
 }
 
 li {
