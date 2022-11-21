@@ -28,13 +28,14 @@ username varchar(255),
 FirstName varchar(255), 
 LastName varchar(255), 
 Age int, 
-SexualOrientation char(1), 
+SexualOrientation char(1),
+Gender char(1), 
 Instagram varchar(255), 
 UserDescription varchar(255));
 
 INSERT INTO UserInfo
-VALUES ("sid_bansal", "Sid", "Bansal", 19, "S", "@sid_is_awesome", "We love Sid. Man's the whole package. 10/10 would recommend. And don't get me started on his ramen...."),
-("sanjana123", "Sanjana", "Ilango", 19, "S", "@otters_are_cute", "I would rant about how amazing Sanjana is, but unfortunately our girl is taken. Aditya's a lucky man.");
+VALUES ("sid_bansal", "Sid", "Bansal", 19, "S", "M", "@sid_is_awesome", "We love Sid. Man's the whole package. 10/10 would recommend. And don't get me started on his ramen...."),
+("sanjana123", "Sanjana", "Ilango", 19, "S", "F", "@otters_are_cute", "I would rant about how amazing Sanjana is, but unfortunately our girl is taken. Aditya's a lucky man.");
 
 #####
 # Below should also be changed to support username instead of first and last name
