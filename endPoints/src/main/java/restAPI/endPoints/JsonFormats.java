@@ -91,7 +91,7 @@ class CreateProfileJson extends BasicInfo
 		first = "sid";
 		last = "bansal";
 		age = 69;
-		gender = 666;
+		gender = 2;
 		SexOrient = 5;
 		insta = "Kill me";
 		description = "AAAHHHHH";

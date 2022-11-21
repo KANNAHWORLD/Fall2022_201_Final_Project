@@ -101,6 +101,15 @@ public class DataStore
 		System.out.println(CPJ.statusCode);
 		
 		
+		////////////////////
+		// TESTING if ALLPROFILES WORKS!!
+		// Not yet tested
+		//
+		ArrayList<Profiles> testP = ds.allProfiles();
+		for(Profiles profs : testP)
+		{
+			System.out.println(profs.FirstName);
+		}
 		
 		
 		//Creates Schema "testSchema"
@@ -464,8 +473,8 @@ public class DataStore
 			// Inputs the information into UserInfo table
 			
 			tables = "UserInfo";
-			values = "VALUES(\"%s\", \"%s\",\"%s\",%d, %d,\"%s\",\"%s\")";
-			values = String.format(values, CPJ.UserName, CPJ.first, CPJ.last, CPJ.age, CPJ.SexOrient, CPJ.insta, CPJ.description);
+			values = "VALUES(\"%s\", \"%s\",\"%s\",%d, %d, %d, \"%s\",\"%s\")";
+			values = String.format(values, CPJ.UserName, CPJ.first, CPJ.last, CPJ.age, CPJ.SexOrient, CPJ.gender, CPJ.insta, CPJ.description);
 			query = "INSERT INTO " + tables + " " + values + ";";
 			LastQuery = query;
 			generalQuery(query);
@@ -632,6 +641,42 @@ public class DataStore
 		return ret;
 	}
 
+	// Simple, basically just gets all of the people on the platform
+	// and returns a set with FirstName, LastName, and usernames of each 
+	// user on the platform
+	public ArrayList<Profiles> allProfiles()
+	{
+		String components = "FirstName, LastName, username";
+		String table = "UserLogin";
+		String query = "SELECT " + components + " FROM " + table + ";";
+		ResultSet rs = getQuery(query);
+		
+		ArrayList<Profiles> retSet = new ArrayList<Profiles>();
+		Profiles prof = null;
+		try {
+			while (rs.next())
+			{
+				prof = new Profiles();
+				prof.FirstName = rs.getString("FirstName");
+				prof.LastName = rs.getString("LastName");
+				prof.UserName = rs.getString("username");
+				retSet.add(prof);
+			}
+		} catch (SQLException e) {
+			System.out.println("There was an error");
+			e.printStackTrace();
+		}
+		
+		return retSet;
+		
+	}
+	
+	
+	
+	/*
+	 * 
+	// Code below needs some adjustment
+	//
 	// currently returns void, might be needed to change later on
 	// Might need to change the function parameter
 	// Might return result set
@@ -667,5 +712,7 @@ public class DataStore
 		}
 		
 	}
+	
+	*/
 	
 }

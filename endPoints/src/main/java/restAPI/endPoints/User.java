@@ -1,5 +1,7 @@
 package restAPI.endPoints;
 
+import java.util.ArrayList;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -10,9 +12,8 @@ public class User {
 	DataStore DBInstance = new DataStore();
 	
 	
-	// FOR SANNJAN DROP DOWN BAR!!!!!!!!!!!!!
 	//
-	//
+	// Never mind this is basically useless currently
 	//
 	// BELOW SHOULD BE DONE
 	//
@@ -47,7 +48,6 @@ public class User {
 		// endRes will have an error code and a ServerMessage, both of which will be sent
 		// back to the front end along with the original content of the queried Json
 		CreateProfileJson endRes = (CreateProfileJson) DBInstance.createProfile(CPJ);
-		
 		
 		// We need to figure out what to send back, consult design documents
 		System.out.println("CreateProfile Function was hit!");
@@ -96,9 +96,22 @@ public class User {
 		return new JsonFormats();
 	}
 	
+
 	
 	
-	
+	// FOR SANNJAN DROP DOWN BAR!!!!!!!!!!!!!
+	//
+	//
+	// Returns all profiles from the database for the drop down menu thing in 
+	// the react aplicatoin
+	@RequestMapping(value="/allprofiles", method = RequestMethod.GET)
+	@ResponseBody
+	public ArrayList<Profiles> allProfiles()
+	{
+		// Calls DBInstance to find all of the profiles
+		// check DataStore.java to see what the function does
+		return DBInstance.allProfiles();
+	}
 	
 	
 	
