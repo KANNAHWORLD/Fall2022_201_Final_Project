@@ -44,8 +44,7 @@ public class DataStore
 //		
 //		DataStore s = new DataStore(URL);
 		//ss.createSchema("CREATE SCHEMA testSchema");
-		
-		
+		//
 		// ^^ IGNORE ABOVE
 		
 		// Creates a new database by using default constructor.
@@ -73,11 +72,12 @@ public class DataStore
 		/////////////////////
 		// CreateProfile Test
 		// Status? In progress
+		// So far it works
+		System.out.println("\n\nCreating new profile test:\n");
 		CreateProfileJson CPJ = new CreateProfileJson(34);
 		ds.createProfile(CPJ);
 		System.out.println(CPJ.ServerMessage);
-		
-		System.out.println("HERE");
+		System.out.println(CPJ.statusCode);
 		
 		String query = "SELECT FirstName FROM UserLogin WHERE username=\"" + CPJ.UserName + "\";";
 		ResultSet test2 = ds.getQuery(query);
@@ -89,6 +89,18 @@ public class DataStore
 			e.printStackTrace();
 		}
 		////////////////////
+		
+		////////////////////
+		// CREATING A PROFILE WHICH ALREADY EXISTS TEST
+		// IT FUCKING WORKS!!!!!!!!!!!!!!!!!!!!!!!!
+		//
+		System.out.println("\n\nCREATING SAME PROFILE TEST:\n");
+		CPJ = new CreateProfileJson(34);
+		ds.createProfile(CPJ);
+		System.out.println(CPJ.ServerMessage);
+		System.out.println(CPJ.statusCode);
+		
+		
 		
 		
 		//Creates Schema "testSchema"
@@ -381,24 +393,12 @@ public class DataStore
 	///////////////////////
 	
 	
-	// TODO:
-	
-	
-	/////// IMPORTANT //////////////
-	// createProfile() needs to be adjusted once the databases uses UserName and Password
-	// instead of just FirstName and LastName. Two queries specifically need to be changed
-	// The user's selfRank data table also needs to be changed once it is decided the format
-	// of the table
-	//
-	// FORMAT SPECIFIER NOT WORKING FOR INTEGERS !!!!!!!!!!!
-	//
-	///////////// IMPORTANT ///////////////////////
-	
+	/////// createProfile() SHOULD BE COMPLETE ////////////////
 	
 	// Simply creates the profile in the Database,
 	// does not throw exceptions
 	// returns the input Json Format but edits the ServerMessage and StatusCode if successful
-	// returns a new JsonFormat if failed
+	// CPJ with error code and message if failed
 	public JsonFormats createProfile(CreateProfileJson CPJ)
 	{
 		// Create the SQL Statements for CPJ
@@ -421,7 +421,9 @@ public class DataStore
 		
 		if(rs != null)
 		{
-			return new JsonFormats(417, "Profile either exists or username is taken");
+			CPJ.ServerMessage = "Profile either exists or username is taken";
+			CPJ.statusCode = 417;
+			return CPJ;
 		}
 		
 		// LastQuery is there for the purposes of checking which query
@@ -455,12 +457,15 @@ public class DataStore
 			////////////////////////////////////////////////////////////////////////////////
 			
 			
+			
+			// Below changed to add support for username mapping
+			
 			///////////////////////////////////////////////////////////////////////////////
 			// Inputs the information into UserInfo table
 			
 			tables = "UserInfo";
-			values = "VALUES(\"%s\",\"%s\",\"%i\",\"%i\",\"%s\",\"%s\")";
-			values = String.format(values, CPJ.first, CPJ.last, CPJ.age, CPJ.SexOrient, CPJ.insta, CPJ.description);
+			values = "VALUES(\"%s\", \"%s\",\"%s\",%d, %d,\"%s\",\"%s\")";
+			values = String.format(values, CPJ.UserName, CPJ.first, CPJ.last, CPJ.age, CPJ.SexOrient, CPJ.insta, CPJ.description);
 			query = "INSERT INTO " + tables + " " + values + ";";
 			LastQuery = query;
 			generalQuery(query);
@@ -473,53 +478,97 @@ public class DataStore
 			/////////// IMPORTANT //////////////////
 			// BELOW NEEDS TO BE FIXED BECAUSE WE DO NOT KNOW HOW TO STORE THE THINGS BELOW
 			//////////// IMPORTANT //////////////////
+			//
+			// Adjusted to support username instead of first/last name
 			
 			
 			///////////////////////////////////////////////////////////////////////////////
 			// Inputs the information into UserPrference table
+			// Currently using a CSV approach
+			// Should ideally store usernames
 			
-			tables = "UserPreferences";
-			values = "VALUES(\"%s\",\"%s\",\"%i\",\"%i\",\"%s\",\"%s\")";
-			values = String.format(values, CPJ.first, CPJ.last, CPJ.age, CPJ.SexOrient, CPJ.insta, CPJ.description);
+			tables = "UserPreferenceList";
+			values = "VALUES(\"%s\", \"%s\")";
+			
+			
+			String CSVPreferences = "";
+			for(String x : CPJ.prefered.people)
+			{
+				CSVPreferences += x + ",";
+			}
+			
+			// adds no one as a placeholder if there is no one in their preference list
+			if(CSVPreferences.equals(""))
+			{
+				CSVPreferences += "no one";
+			}
+			
+			values = String.format(values, CPJ.UserName, CSVPreferences);
 			query = "INSERT INTO " + tables + " " + values + ";";
 			LastQuery = query;
 			generalQuery(query);
 			
-			//Should be inserted into UserPreferenceList
+			// Should be inserted into UserPreferenceList
 			/////////////////////////////////////////////////////////////////////////////////
+			
+			
+			
+			///////////////////////////////////////////////////////////////////////////////
+			// Inputs the information into UserDesiresRanking table
+						
+			tables = "UserDesiresRanking";
+			values = "VALUES(\"%s\", %d, %d, %d, %d, %d, %d, %d, %d, %d, %d )";
+			values = String.format(values, CPJ.UserName, CPJ.preferRank.extroverted, CPJ.preferRank.humor, CPJ.preferRank.adventure,
+					CPJ.preferRank.ambition, CPJ.preferRank.artistic, CPJ.preferRank.wOfAff, CPJ.preferRank.physTouch, CPJ.preferRank.gifts,
+					CPJ.preferRank.qualTime, CPJ.preferRank.service);
+			query = "INSERT INTO " + tables + " " + values + ";";
+			LastQuery = query;
+			generalQuery(query);
+
+			// Should be inserted into UserDesiresRanking table
+			/////////////////////////////////////////////////////////////////////////////////
+			
 			
 			
 			/////////////// IMPORTANT ///////////////////////////
 			/// BElOW NEEDS TO ADD SUPPORT FOR USERNAMES INSTEAD OF FIRST/LASTNAME
 			////////////// IMPORTANT ////////////////////////////
+			//
+			// DONE!!!!!
 			
 	
 			///////////////////////////////////////////////////////////////////////////////
-			// Inputs the information into UserDesiresRanking table
+			// Inputs the information into UserSelfRanking table
 			
-			tables = "UserDesiresRanking";
-			values = "VALUES(\"%s\", \"%s\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\", \"%i\" )";
-			values = String.format(values, CPJ.first, CPJ.last, CPJ.selfRank.extroverted, CPJ.selfRank.humor, CPJ.selfRank.adventure,
+			tables = "UserSelfRanking";
+			values = "VALUES(\"%s\", %d, %d, %d, %d, %d, %d, %d, %d, %d, %d )";
+			values = String.format(values, CPJ.UserName, CPJ.selfRank.extroverted, CPJ.selfRank.humor, CPJ.selfRank.adventure,
 					CPJ.selfRank.ambition, CPJ.selfRank.artistic, CPJ.selfRank.wOfAff, CPJ.selfRank.physTouch, CPJ.selfRank.gifts,
 					CPJ.selfRank.qualTime, CPJ.selfRank.service);
 			query = "INSERT INTO " + tables + " " + values + ";";
 			LastQuery = query;
 			generalQuery(query);
 			
-			//Should be inserted into UserDesiresRanking table
+			//Should be inserted into UserSelfRanking table
 			/////////////////////////////////////////////////////////////////////////////////
 		}
 		catch (SQLException SQLE)
 		{
+			SQLE.printStackTrace();
 			System.out.println("There was an error in the insertion somewhere somehow. This was the "
 					+ "Last Query Executed:\n" + LastQuery + "\n");
-			return new JsonFormats(417, "SQL Query failed during profile Creation");
+			CPJ.ServerMessage = "SQL QUERY FAILED DURING PROFILE CREATION";
+			CPJ.statusCode = 417;
+			return CPJ;
 			
 		} 
 		catch (Exception GeneralException)
 		{
 			System.out.println("Some other exception was hit\n");
+			CPJ.statusCode = 417;
+			CPJ.ServerMessage = "SOME ERROR OCCURED";
 			GeneralException.printStackTrace();
+			return CPJ;
 			
 		}
 		
@@ -589,8 +638,27 @@ public class DataStore
 	public void authorize(JsonFormats JF)
 	{
 		//place holder
-		String query = "";
+		//String Components = "FirstName, LastName, username";
+		String Components = "UserLogin, UserPassword";
+		String Table = "UserLogin";
+		String Conditions = "UserLogin=\"%s\" AND UserPassword=\"%s\"";
+		//String Conditions = "FirstName=\"%s\" OR LastName=\"%s\" OR FirstName=\"%s\" OR LastName=\"%s\"";
 		
+		String query = "SELECT " + Components + " FROM " + Table + " WHERE " + Conditions + ";";
+		query = String.format(query, JF.UserLogin, JF.UserPassword);
+		
+		ResultSet set = getQuery(query);
+
+		if(set.equals(null))
+		{
+			return "Profile not found";
+		}
+
+		ProfileWrapper ret = new ProfileWrapper();
+		Profiles addition = new Profiles();
+
+		
+
 		// might need to change function
 		try {
 			generalQuery(query);
