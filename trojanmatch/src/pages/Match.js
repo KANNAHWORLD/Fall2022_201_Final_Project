@@ -4,6 +4,44 @@ import logo from '../images/logo.png';
 import '@fontsource/pacifico';
 import { Link } from 'react-router-dom';
 function Match() {
+
+  /*
+  const [people, setPeople] = useState([]);
+  const [rating, setRating] = useState([]);
+  addperson(){
+     
+      new array = people
+      array.add new {name = "", key = person.size() - 1}
+      setpeople (array);
+      new array = rating
+      array.add {rating = 0, key = person.size() - 1}
+      setRating (array);
+    
+
+  }
+  changeperson(values, int){
+    new array = people
+      array[int] = value
+      setpeople (array);
+      
+  }
+  change rating (values, int){
+      new array = rating
+     array[int] = int;
+      setRating (array);
+  }
+
+  {people.map((person) => {
+    return(
+      <dropdown options = {options} onChange = {(values) => changeperson(values, key)}>
+      <dowpdown rating options = {1,2,3,4,5,6,7,8,9,10} onChange => changeRating {(values, key )}
+    );
+  })}
+  <button onclick { addperson }>
+  
+  image/smth of a plus sign -> on click should trigger a function
+    
+  */
     const [button, setButton] = useState("ACCEPT MATCH <3");
     const changeButton = () => {
       if (button === "ACCEPT MATCH <3"){
