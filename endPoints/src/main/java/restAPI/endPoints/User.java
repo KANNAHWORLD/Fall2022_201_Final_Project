@@ -9,6 +9,11 @@ public class User {
 	
 	DataStore DBInstance = new DataStore();
 	
+	
+	// FOR SANNJAN DROP DOWN BAR!!!!!!!!!!!!!
+	//
+	//
+	//
 	// BELOW SHOULD BE DONE
 	//
 	// This request is going to find someone's profile
@@ -27,10 +32,12 @@ public class User {
 	}
 	
 	
+	
+	
 	// TODO:
-	//This section will create a new profile for the person. It takes in Json formatted data
+	// This section will create a new profile for the person. It takes in Json formatted data
 	// Queries database, and returns something back, just use your brain
-	@RequestMapping(value="/createProfile", method = RequestMethod.GET)
+	@RequestMapping(value="/createProfile", method = RequestMethod.POST)
 	@ResponseBody
     public CreateProfileJson createProfile(@RequestBody CreateProfileJson CPJ) 
 	{
@@ -58,7 +65,7 @@ public class User {
 	// WE SHOULD INCORPORATE MULTITHREDDING HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	@RequestMapping(value="/matches")
+	@RequestMapping(value="/matches", method = RequestMethod.GET)
 	@ResponseBody
 	
 	// Currently takes in a basic info object, but this might need to change given people 
@@ -72,13 +79,33 @@ public class User {
 		return "Matching";
 	}
 	
+	
 	// TODO:
 	// This right here is supposed get someone's profile
 	// still needs work, not really sure how to implement this currently
-	public JsonFormats getProfile(JsonFormats JF)
+	// Will return the person's rankings of himself, his name, age, sexual orientation
+	// instagram handle, and description
+	@RequestMapping(value="/getProfile", method = RequestMethod.GET)
+	public JsonFormats getProfile(@RequestBody Profiles singleProfile)
 	{
+		
 		return new JsonFormats();
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	// 
 	// RANDOM TEST ENDPOINT, NEEDS TO BE DEPRECATED EVENTUALLY

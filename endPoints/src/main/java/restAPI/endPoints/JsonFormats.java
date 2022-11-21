@@ -37,6 +37,7 @@ class BasicInfo extends JsonFormats
 	public String last;
 	public int age;
 	public int SexOrient;
+	public int gender;
 	public String insta;
 	public String description;
 }
@@ -63,7 +64,7 @@ class ProfileWrapper extends JsonFormats
 	}
 }
 
-class Profiles
+class Profiles extends JsonFormats
 {
 	public String FirstName;
 	public String LastName;
@@ -90,6 +91,7 @@ class CreateProfileJson extends BasicInfo
 		first = "sid";
 		last = "bansal";
 		age = 69;
+		gender = 666;
 		SexOrient = 420;
 		insta = "Kill me";
 		description = "AAAHHHHH";
