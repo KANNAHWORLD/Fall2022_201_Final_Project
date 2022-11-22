@@ -22,10 +22,12 @@ public class Authorization {
 	// Not exactly sure what this should return back after the function
 	// call
 	// will check docs and maybe consult frontend
-	public String OAuth(@RequestBody JsonFormats JF)
+	public JsonFormats OAuth(@RequestBody CreateProfileJson JF)
 	{
-		DBConnection.authorize(JF);
-		return "Authorization";
+		// returns a plain JsonFormats with nothing except a status code and a
+		// a ServerMessage
+		return DBConnection.authorize(JF);
+		
 	}
 	
 	

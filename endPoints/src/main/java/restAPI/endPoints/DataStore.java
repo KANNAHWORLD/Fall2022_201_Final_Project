@@ -103,13 +103,21 @@ public class DataStore
 		
 		////////////////////
 		// TESTING if ALLPROFILES WORKS!!
-		// Not yet tested
+		// Tested and it works
 		//
 		ArrayList<Profiles> testP = ds.allProfiles();
 		for(Profiles profs : testP)
 		{
 			System.out.println(profs.FirstName);
 		}
+		
+		//////////////////////
+		// TESTING IF AUTHORIZATION WORKS
+		// -- not yet tested
+		JsonFormats returned = ds.authorize(CPJ);
+		System.out.println("\n\nTESTING AUTHORIZATION");
+		System.out.println(returned.ServerMessage);
+		System.out.println(returned.statusCode);
 		
 		
 		//Creates Schema "testSchema"
@@ -586,7 +594,8 @@ public class DataStore
 		return CPJ;
 	}
 
-	
+	// Below is currently useless, may be updated to do a more specific
+	// task in the future (Possibly retrieving a single profile)
 	// In this section, we will just query based on the profile we want
 	// It will only return name and password
 	// Needs a first name or last name
@@ -641,6 +650,7 @@ public class DataStore
 		return ret;
 	}
 
+	
 	// Simple, basically just gets all of the people on the platform
 	// and returns a set with FirstName, LastName, and usernames of each 
 	// user on the platform
@@ -672,47 +682,46 @@ public class DataStore
 	}
 	
 	
-	
-	/*
-	 * 
 	// Code below needs some adjustment
 	//
 	// currently returns void, might be needed to change later on
 	// Might need to change the function parameter
 	// Might return result set
-	public void authorize(JsonFormats JF)
+	public JsonFormats authorize(CreateProfileJson JF)
 	{
-		//place holder
-		//String Components = "FirstName, LastName, username";
-		String Components = "UserLogin, UserPassword";
+		
+		
+		String Components = "username";
 		String Table = "UserLogin";
-		String Conditions = "UserLogin=\"%s\" AND UserPassword=\"%s\"";
-		//String Conditions = "FirstName=\"%s\" OR LastName=\"%s\" OR FirstName=\"%s\" OR LastName=\"%s\"";
+		String Conditions = "username=\"%s\" AND password=\"%s\"";
+		
 		
 		String query = "SELECT " + Components + " FROM " + Table + " WHERE " + Conditions + ";";
-		query = String.format(query, JF.UserLogin, JF.UserPassword);
+		query = String.format(query, JF.UserName, JF.Password);
 		
 		ResultSet set = getQuery(query);
-
-		if(set.equals(null))
-		{
-			return "Profile not found";
-		}
-
-		ProfileWrapper ret = new ProfileWrapper();
-		Profiles addition = new Profiles();
-
 		
-
-		// might need to change function
+		JsonFormats retJson = new JsonFormats();
+		
 		try {
-			generalQuery(query);
-		} catch (SQLException e) {
-			e.printStackTrace();
+			if(set.next())
+			{
+				retJson.ServerMessage = "User Profile Found";
+				retJson.statusCode = 200;
+			}
+			else
+			{
+				retJson.ServerMessage = "User profile does not exist";
+				retJson.statusCode = 404;
+			}
+		} catch (SQLException e1) {
+			System.out.println("Error in DataStore.authorize function");
+			e1.printStackTrace();
 		}
+
+		return retJson;
+
 		
 	}
-	
-	*/
 	
 }
