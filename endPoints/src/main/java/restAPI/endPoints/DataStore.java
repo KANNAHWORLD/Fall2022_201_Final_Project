@@ -5,14 +5,16 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.Reader;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+import javax.sql.DataSource;
+
 
 
 // NOTE: WE NEED MIGHT NEED TO MAKE ANOTHER GENERAL GET QUERY THAT RETURNS A JSON
@@ -50,7 +52,7 @@ public class DataStore
 		// Creates a new database by using default constructor.
 		// Deletes the schema, then creates a new one at each instance
 		// might be usefule for testing functionality and writing specific code
-		DataStore ds = new DataStore();
+		DataStore ds = new DataStore("asdf");
 		
 		////////////////////////////
 		// TESTS getProfile function
@@ -140,43 +142,29 @@ public class DataStore
 	{
 		try {
 			
-			
+			// username=201DataStoreClass
+			// password=travellerthehorse
+			// link "jdbc:mysql://35.185.234.102:3306/utopian-sky-368201:us-west1:test201
 			// jdbc:mysql://google/test201?cloudSqlInstance=utopian-sky-368201:us-west1:test201&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=root&password=root
 			
-            Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = DriverManager.getConnection
+					("jdbc:mysql://35.185.234.102:3306/test201", "201DataStoreClass", "travellerthehorse");
+			DataStore.DBConnection = conn;
+			/*
+			 * String SQLURL =
+			 * "jdbc:mysql:///test201?cloudSqlInstance=utopian-sky-368201:us-west1:test201"
+			 * +
+			 * "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=201DataStoreClass&password=travellerthehorse";
+			 * conn = DriverManager.getConnection(SQLURL);
+			 * 
+			 * DBConnection = conn;
+			 */
 
-//            String instanceConnectionName = "TheActualInstanceName"; 
-//            String databaseName = "BudgetApp";
-//
-//            String IP_of_instance = "35.185.234.102";
-//            String username = "201test";
-//            String password = "horsepig";
-//            String jdbcUrl = String.format("jdbc:mysql://%s/%s?cloudSqlInstance=%s" + 
-//                    "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false",
-//                    IP_of_instance, databaseName, instanceConnectionName);
-            
-            String jdbcurl2 = "jdbc:mysql://google/test201?cloudSqlInstance=utopian-sky-368201:us-west1:test201&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=root&password=root";
-
-           // Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
-
-            Connection conn = DriverManager.getConnection(jdbcurl2);
-            
-            Statement stat = conn.createStatement();
-            
-            DBConnection = conn;
-           
-//            ResultSet res = stat.executeQuery("Select * from users;");
-//            String result = "";
-//            while (res.next()) 
-//            {
-//                result += (res.getString(1) + " " + res.getString(2) + " " + res.getString(3));
-//            }
         }
         catch(Exception e)
         {
         	System.out.println("Here");
             System.out.println(e);
-//            return null;
         }
 
 

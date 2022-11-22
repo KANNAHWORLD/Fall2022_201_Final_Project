@@ -125,7 +125,7 @@ public class User {
 	
 	
 	// 
-	// RANDOM TEST ENDPOINT, NEEDS TO BE DEPRECATED EVENTUALLY
+	// RANDOM TEST ENDPOINT, NEEDS TO BE removed EVENTUALLY
 	//
 	// This was just for testing purposes, should be eventually phased out or made private
 	@RequestMapping(value="/test", method = RequestMethod.POST)
