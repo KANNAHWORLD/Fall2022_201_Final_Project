@@ -1,6 +1,6 @@
 package restAPI.endPoints;
 
 public class DBConstants {
-	final static String UserName = "root";
-	final static String Password = "Iltsad!1";
+	final static String UserName = "";
+	final static String Password = "";
 }
