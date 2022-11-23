@@ -11,9 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
-import javax.sql.DataSource;
 
 
 
@@ -34,25 +31,8 @@ public class DataStore
 	// its only purpose is to test functionality within the program
 	public static void main(String [] args)
 	{
-		//String URL2 = "jdbc:mysql:/35.185.234.102:3306/test201";
-		//DataStore ss = new DataStore(URL2);
-		
-//		String URL = "jdbc:mysql:///test201?cloudSqlInstance="
-//				+ "utopian-sky-368201:us-west1:test201" // Instance name
-//				+ "&socketFactory=com.google."
-//				+ "cloud.sql.mysql.SocketFactory&"
-//				+ "user=test201" // username
-//				+ "&password=horsehorsepig"; // password
-//		
-//		DataStore s = new DataStore(URL);
-		//ss.createSchema("CREATE SCHEMA testSchema");
-		//
-		// ^^ IGNORE ABOVE
-		
-		// Creates a new database by using default constructor.
-		// Deletes the schema, then creates a new one at each instance
-		// might be usefule for testing functionality and writing specific code
-		DataStore ds = new DataStore("asdf");
+		// using cloudsql database
+		DataStore ds = new DataStore("lkj");
 		
 		////////////////////////////
 		// TESTS getProfile function
@@ -122,43 +102,39 @@ public class DataStore
 		System.out.println(returned.statusCode);
 		
 		
-		//Creates Schema "testSchema"
-//		ds.noexceptQuery("CREATE SCHEMA testSchema");
-//		
-//		// TODO: add code here for testing
-//		
-//		ds.noexceptQuery("CREATE TABLE testSchema.herro(number INT)");
-//		ds.noexceptQuery("INSERT INTO testSchema.herro VALUES (50)");
-//		
-//		//Deletes the Schema
-//		ds.noexceptQuery("DROP SCHEMA testSchema");
 	}
 	
 	
-	// IGNORE FOR NOW
-	// Eventually we want to somehow link this constructor to the google cloud
+	
+	//private static final String DB_USER = "root";
+	//private static final String DB_PASS = "dbpassword";
+	//private static final String DB_NAME = "db201";
+	
+	//private static final String INSTANCE_HOST = "34.68.114.207";
+	//private static final String DB_PORT = "3306";
+
+	// WERKING!!!
 	// cloud sql instance
 	DataStore(String URL)
 	{
 		try {
 			
-			// username=201DataStoreClass
-			// password=travellerthehorse
-			// link "jdbc:mysql://35.185.234.102:3306/utopian-sky-368201:us-west1:test201
-			// jdbc:mysql://google/test201?cloudSqlInstance=utopian-sky-368201:us-west1:test201&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=root&password=root
+			// username = root
+			// password dbpassword
 			
-			Connection conn = DriverManager.getConnection
-					("jdbc:mysql://35.185.234.102:3306/test201", "201DataStoreClass", "travellerthehorse");
+			// TO PREVENT Multiple connections being made and overriding 
+			// DBConnection. So that its value is only set once upon initializing 
+			// DataStore
+			if(DBConnection != null)
+			{
+				return;
+			}
+			
+			
+			//Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.68.114.207:3306/db201", "root", "dbpassword");
 			DataStore.DBConnection = conn;
-			/*
-			 * String SQLURL =
-			 * "jdbc:mysql:///test201?cloudSqlInstance=utopian-sky-368201:us-west1:test201"
-			 * +
-			 * "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&user=201DataStoreClass&password=travellerthehorse";
-			 * conn = DriverManager.getConnection(SQLURL);
-			 * 
-			 * DBConnection = conn;
-			 */
+			initializeDatabase();
 
         }
         catch(Exception e)
@@ -166,8 +142,6 @@ public class DataStore
         	System.out.println("Here");
             System.out.println(e);
         }
-
-
 	}
 
 	// Uses initializeDatabase()
