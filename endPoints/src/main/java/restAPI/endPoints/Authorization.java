@@ -24,7 +24,7 @@ public class Authorization {
 	// will check docs and maybe consult frontend
 	public String OAuth(@RequestBody JsonFormats JF)
 	{
-		DBConnection.authorize(JF);
+		//DBConnection.authorize(JF);
 		return "Authorization";
 	}
 	
