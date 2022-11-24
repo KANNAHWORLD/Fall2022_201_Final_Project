@@ -90,12 +90,12 @@ INSERT INTO UserSelfRanking
 VALUES ("sid_bansal", 5, 5, 5, 5, 5, 5, 5, 5, 5, 5),
 ("sanjana123", 5, 5, 5, 5, 5, 5, 5, 5, 5, 5);
 
-SELECT * FROM UserInfo;
+#SELECT * FROM UserInfo;
 
-SELECT * FROM UserPreferenceList;
+#SELECT * FROM UserPreferenceList;
 
-SELECT * FROM UserDesiresRanking;
+#SELECT * FROM UserDesiresRanking;
 
-SELECT * FROM UserLogin;
+#SELECT * FROM UserLogin;
 
-SELECT * FROM UserSelfRanking;
+#SELECT * FROM UserSelfRanking;
