@@ -34,8 +34,8 @@ Instagram varchar(255),
 UserDescription varchar(255));
 
 INSERT INTO UserInfo
-VALUES ("sid_bansal", "Sid", "Bansal", 19, "S", "M", "@sid_is_awesome", "We love Sid. Man's the whole package. 10/10 would recommend. And don't get me started on his ramen...."),
-("sanjana123", "Sanjana", "Ilango", 19, "S", "F", "@otters_are_cute", "I would rant about how amazing Sanjana is, but unfortunately our girl is taken. Aditya's a lucky man.");
+VALUES ("sid_bansal", "Sid", "Bansal", 19, "F", "M", "@sid_is_awesome", "We love Sid. Man's the whole package. 10/10 would recommend. And don't get me started on his ramen...."),
+("sanjana123", "Sanjana", "Ilango", 19, "M", "F", "@otters_are_cute", "I would rant about how amazing Sanjana is, but unfortunately our girl is taken. Aditya's a lucky man.");
 
 #####
 # Below should also be changed to support username instead of first and last name
@@ -47,8 +47,8 @@ username varchar(255),
 PreferenceList varchar(255));
 
 INSERT INTO UserPreferenceList
-VALUES ("sid_bansal", "Youg for some reason that's beyond me. The other preferences will be added after I figure out how to go about this cuz SQL doesn't have a simple array type"),
-("sanjana123", "Aditya");
+VALUES ("sid_bansal", "sanjana123,10"),
+("sanjana123", "sid_bansal,10");
 
 
 #####
@@ -72,6 +72,14 @@ INSERT INTO UserDesiresRanking
 VALUES ("sid_bansal", 5, 2, 3, 3, 4, 4, 3, 4, 5, 5),
 ("sanjana123", 3, 4, 3, 4, 5, 2, 3, 3, 4, 5);
 
+CREATE TABLE Matches(
+username varchar(255),
+matchname varchar(255)
+);
+
+INSERT INTO Matches
+VALUES ("sid_bansal", null),
+("sanjana123", null);
 
 CREATE TABLE UserSelfRanking (
 username varchar(255), 

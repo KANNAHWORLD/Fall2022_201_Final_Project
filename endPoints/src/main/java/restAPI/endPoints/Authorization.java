@@ -27,7 +27,6 @@ public class Authorization {
 		// returns a plain JsonFormats with nothing except a status code and a
 		// a ServerMessage
 		return DBConnection.authorize(JF);
-		
 	}
 	
 	

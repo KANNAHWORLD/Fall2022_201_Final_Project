@@ -72,11 +72,11 @@ public class User {
 	// are assigned special tokens or something so that we do not have individual
 	// Might want to change this so that it only takes in a username and generates matches
 	// from there since we can just query the database for that.
-	public String match(@RequestBody BasicInfo str)
+	public String match(@RequestBody String user)
 	{
 		
-		System.out.println(str);
-		return "Matching";
+		String toret = DBInstance.getMatch(user);
+		return toret;
 	}
 	
 	

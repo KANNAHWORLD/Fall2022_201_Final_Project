@@ -11,6 +11,17 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.Vector;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+import org.checkerframework.checker.units.qual.A;
+import org.springframework.scheduling.annotation.Scheduled;
 
 
 
@@ -93,6 +104,7 @@ public class DataStore
 			System.out.println(profs.FirstName);
 		}
 		
+		
 		//////////////////////
 		// TESTING IF AUTHORIZATION WORKS
 		// -- not yet tested
@@ -100,7 +112,24 @@ public class DataStore
 		System.out.println("\n\nTESTING AUTHORIZATION");
 		System.out.println(returned.ServerMessage);
 		System.out.println(returned.statusCode);
+
 		
+		////////////////////
+		// TESTING IF MATCH PAIRS WORKS
+		// Supposedly works
+		ds.matchPairs();
+		String query1 = "SELECT username, matchname FROM Matches";
+		ResultSet test3 = ds.getQuery(query1);
+		try {
+			while (test3.next()){
+				System.out.println(test3.getString("username") + test3.getString("matchname"));
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println(ds.getMatch("sanjana123"));
 		
 	}
 	
@@ -555,6 +584,7 @@ public class DataStore
 		CPJ.statusCode = 200;
 		return CPJ;
 	}
+	
 
 	// Below is currently useless, may be updated to do a more specific
 	// task in the future (Possibly retrieving a single profile)
@@ -642,6 +672,145 @@ public class DataStore
 		return retSet;
 		
 	}
+
+	public String getMatch(String usern){
+		String conditions = "username = \"%s\"";
+		
+		conditions = String.format(conditions, usern);
+		String query = "SELECT matchname FROM Matches WHERE " + conditions;
+		ResultSet rs = getQuery(query);
+		String toreturn = null;
+		try {
+			while (rs.next())
+			{
+				toreturn = rs.getString("matchname");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return toreturn;
+	}
+
+	@Scheduled (cron = "0 0 0 * * ?")
+	public void matchPairs(){
+		String query = "SELECT ui.username, ui.SexualOrientation, ui.Gender, upl.PreferenceList, udr.Extroverted,"
+				+ " udr.Humor, udr.Adventurous, udr.Ambitious, udr.Artistic, udr.WordsOfAffirmation, udr.PhysicalTouch,"
+				+ " udr.ReceivingGifts, udr.QualityTime, udr.ActsOfService, m.matchname, usr.Extroverted as SE, usr.Humor as SH, "
+				+ "usr.Adventurous as SA, usr.Ambitious as SAM, usr.Artistic as SAR, usr.WordsOfAffirmation as SW,"
+				+ " usr.PhysicalTouch as SP, usr.ReceivingGifts as SR, usr.QualityTime as SQ, usr.ActsOfService as SAC "
+				+ "FROM UserInfo ui, "
+				+ "UserPreferenceList upl, UserDesiresRanking udr, UserSelfRanking usr, Matches m "
+				+ "WHERE ui.username = upl.username AND ui.username = udr.username AND ui.username = usr.username AND ui.username = m.username";
+		ResultSet rs = getQuery(query);
+		Vector<CreateProfileJson> peop = new Vector<CreateProfileJson>();
+		HashSet<String> matched = new HashSet<String>();
+		HashMap<String, HashMap<String, Integer>> rated = new HashMap<String, HashMap<String, Integer>>();
+		try {
+			while (rs.next())
+			{
+				CreateProfileJson prof = new CreateProfileJson();	
+				String g = rs.getString("Gender");
+				if (g == "M"){
+					prof.gender = 1;
+				}
+				else if (g == "F"){
+					prof.gender = 2;
+				}
+				else{
+					prof.gender = 3;
+				}
+				g = rs.getString("SexualOrientation");
+				if (g == "M"){
+					prof.SexOrient = 1;
+				}
+				else if (g == "F"){
+					prof.SexOrient = 2;
+				}
+				else{
+					prof.SexOrient = 3;
+				}
+				prof.first = rs.getString("matchname");
+				prof.UserName = rs.getString("username");
+				prof.selfRank.extroverted = rs.getInt("SE");
+				prof.selfRank.humor = rs.getInt("SH");
+				prof.selfRank.adventure = rs.getInt("SA");
+				prof.selfRank.ambition = rs.getInt("SAM");
+				prof.selfRank.artistic = rs.getInt("SAR");
+				prof.selfRank.wOfAff = rs.getInt("SW");
+				prof.selfRank.physTouch = rs.getInt("SP");
+				prof.selfRank.gifts = rs.getInt("SR");
+				prof.selfRank.qualTime = rs.getInt("SQ");
+				prof.selfRank.service = rs.getInt("SAC");
+				
+				prof.preferRank.extroverted = rs.getInt("Extroverted");
+				prof.preferRank.humor = rs.getInt("Humor");
+				prof.preferRank.adventure = rs.getInt("Adventurous");
+				prof.preferRank.ambition = rs.getInt("Ambitious");
+				prof.preferRank.artistic = rs.getInt("Artistic");
+				prof.preferRank.wOfAff = rs.getInt("WordsOfAffirmation");
+				prof.preferRank.physTouch = rs.getInt("PhysicalTouch");
+				prof.preferRank.gifts = rs.getInt("ReceivingGifts");
+				prof.preferRank.qualTime = rs.getInt("QualityTime");
+				prof.preferRank.service = rs.getInt("ActsOfService");
+				String[] prefl = rs.getString("PreferenceList").split(",");
+				HashMap<String, Integer> toa = new HashMap<String, Integer>();
+				for (int i = 0; i < prefl.length; i++){
+					String na = prefl[i];
+					i++;
+					int rat = Integer.valueOf(prefl[i]);
+					toa.put(na, rat);
+				}
+				rated.put(prof.UserName, toa);
+				peop.add(prof);
+			}
+			MatchThread.peop = peop;
+			MatchThread.rated = rated;
+			MatchThread.set = new TreeMap<Integer, Vector<Vector<String>>>();
+			ExecutorService matchthreads = Executors.newCachedThreadPool();
+			for (int i = 0; i < peop.size(); i++){
+				MatchThread threadtoadd = new MatchThread(i);
+				System.out.println(i);
+				matchthreads.execute(threadtoadd);
+			}
+			matchthreads.shutdown();
+			while (!matchthreads.isTerminated()){
+				Thread.yield();
+			}
+			for (Map.Entry<Integer, Vector<Vector<String>>> entry : MatchThread.set.entrySet()){
+				Vector<Vector<String>> pval = entry.getValue();
+				for (int a = 0; a < pval.size(); a++){
+					String p1 = pval.get(a).get(0);
+					String p2 = pval.get(a).get(1);
+					if (!matched.contains(p1) && !matched.contains(p1))
+					{
+						matched.add(p1);
+						matched.add(p2);
+						System.out.println(p1);
+						String conditions = "username = \"%s\"";
+						String col = "matchname = \"%s\"";
+						col = String.format(col, p1);
+		
+						conditions = String.format(conditions, p2);
+						String query1 = "UPDATE Matches SET " + col + " WHERE " + conditions;
+						generalQuery(query1);
+						conditions = "username = \"%s\"";
+		
+						conditions = String.format(conditions, p1);
+						col = "matchname = \"%s\"";
+						col = String.format(col, p2);
+						String query2 = "UPDATE Matches SET " + col + " WHERE " + conditions;
+						generalQuery(query2);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			System.out.println("There was an error");
+			e.printStackTrace();
+		}
+
+	}
 	
 	
 	// Code below needs some adjustment
@@ -687,3 +856,5 @@ public class DataStore
 	}
 	
 }
+
+
