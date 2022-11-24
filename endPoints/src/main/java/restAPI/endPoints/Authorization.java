@@ -11,7 +11,7 @@ public class Authorization {
 	// might need to change constructor later on
 	// maybe make this static?
 	// also private
-	private static DataStore DBConnection = new DataStore();
+	private static DataStore DBInstance = new DataStore();
 	
 	//Authorizes a new login from a person
 	@RequestMapping(value="/OAuth")
@@ -26,9 +26,18 @@ public class Authorization {
 	{
 		// returns a plain JsonFormats with nothing except a status code and a
 		// a ServerMessage
-		return DBConnection.authorize(JF);
+		JsonFormats returned = DBInstance.authorize(JF);
+		if (returned.statusCode != 200)
+		{
+			return returned;
+		}
+		Profiles finding = new Profiles();
+		finding.UserName = JF.UserName;
+		
+		CreateProfileJson CPJ = DBInstance.getProfile(finding);
+		CPJ.statusCode = 200;
+		CPJ.ServerMessage = "Profile found and retrieved";
+		return CPJ;
 	}
-	
-	
 	
 }

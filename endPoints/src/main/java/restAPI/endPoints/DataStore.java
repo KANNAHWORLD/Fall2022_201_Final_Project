@@ -43,7 +43,7 @@ public class DataStore
 	public static void main(String [] args)
 	{
 		// using cloudsql database
-		DataStore ds = new DataStore("lkj");
+		DataStore ds = new DataStore();
 		
 		////////////////////////////
 		// TESTS getProfile function
@@ -51,12 +51,12 @@ public class DataStore
 		Profiles test = new Profiles();
 		test.FirstName = "Sid";
 		
-		ProfileWrapper PW = ds.getProfile(test);
+		CreateProfileJson PW = ds.getProfile(test);
 		
-		for(Profiles x : PW.profiles)
-		{
-			System.out.println(x.FirstName + x.LastName + x.UserName);
-		}
+//		for(Profiles x : PW.profiles)
+//		{
+//			System.out.println(x.FirstName + x.LastName + x.UserName);
+//		}
 		
 		/////////////////////////////
 		
@@ -176,7 +176,31 @@ public class DataStore
 	// Uses initializeDatabase()
 	DataStore()
 	{
-		
+		try {
+			
+			// username = root
+			// password dbpassword
+			
+			// TO PREVENT Multiple connections being made and overriding 
+			// DBConnection. So that its value is only set once upon initializing 
+			// DataStore
+			if(DBConnection != null)
+			{
+				return;
+			}
+			
+			
+			//Class.forName("com.mysql.cj.jdbc.Driver");
+			Connection conn = DriverManager.getConnection("jdbc:mysql://34.68.114.207:3306/db201", "root", "dbpassword");
+			DataStore.DBConnection = conn;
+			initializeDatabase();
+
+        }
+        catch(Exception e)
+        {
+        	System.out.println("Here");
+            System.out.println(e);
+        }
 		
 		// TODO: 
 		// GO TO DBConstants AND CHANGE TO YOUR PERSONAL SQL USERNAMES AND PASSWORDS!!!!!!!
@@ -185,27 +209,29 @@ public class DataStore
 		// TO PREVENT Multiple connections being made and overriding 
 		// DBConnection. So that its value is only set once upon initializing 
 		// DataStore
-		if(DBConnection != null)
-		{
-			return;
-		}
+		
+		
+//		if(DBConnection != null)
+//		{
+//			return;
+//		}
 		
 		// Initializes a connection to the database, and assigns it to DBConnection variable
 		// to be use by other member functions
 
 		
-		try {
-			Connection conn = DriverManager.getConnection
-					("jdbc:mysql://localhost:3306", DBConstants.UserName, DBConstants.Password);
-			DataStore.DBConnection = conn;
-			conn.createStatement();
-			
-			// Initialzie database
-			initializeDatabase();
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			Connection conn = DriverManager.getConnection
+//					("jdbc:mysql://localhost:3306", DBConstants.UserName, DBConstants.Password);
+//			DataStore.DBConnection = conn;
+//			conn.createStatement();
+//			
+//			// Initialzie database
+//			initializeDatabase();
+//			
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
 		
 	}
 	
@@ -537,13 +563,6 @@ public class DataStore
 			/////////////////////////////////////////////////////////////////////////////////
 			
 			
-			
-			/////////////// IMPORTANT ///////////////////////////
-			/// BElOW NEEDS TO ADD SUPPORT FOR USERNAMES INSTEAD OF FIRST/LASTNAME
-			////////////// IMPORTANT ////////////////////////////
-			//
-			// DONE!!!!!
-			
 	
 			///////////////////////////////////////////////////////////////////////////////
 			// Inputs the information into UserSelfRanking table
@@ -557,7 +576,7 @@ public class DataStore
 			LastQuery = query;
 			generalQuery(query);
 			
-			//Should be inserted into UserSelfRanking table
+			// Should be inserted into UserSelfRanking table
 			/////////////////////////////////////////////////////////////////////////////////
 		}
 		catch (SQLException SQLE)
@@ -586,60 +605,96 @@ public class DataStore
 	}
 	
 
-	// Below is currently useless, may be updated to do a more specific
-	// task in the future (Possibly retrieving a single profile)
-	// In this section, we will just query based on the profile we want
-	// It will only return name and password
-	// Needs a first name or last name
-	// 
-	//  POSSIBLY COMPLETE
+
+	// POSSIBLY COMPLETE
+	// gets singular profile
 	//
-	public ProfileWrapper getProfile(Profiles JF)
+	public CreateProfileJson getProfile(Profiles JF)
 	{
 		// Builds the SQL statement before it is queried
 		// Then, the percent signs are filled with the parameters
 		// by doing .format
 		
 		
-		// ESCAPE CHARACTERS ARE NECESSARY FOR CONDITIONS!!!!!!!
+		String query = "SELECT ui.username, ui.SexualOrientation, ui.Gender, upl.PreferenceList, udr.Extroverted,"
+				+ " udr.Humor, udr.Adventurous, udr.Ambitious, udr.Artistic, udr.WordsOfAffirmation, udr.PhysicalTouch,"
+				+ " udr.ReceivingGifts, udr.QualityTime, udr.ActsOfService, m.matchname, usr.Extroverted as SE, usr.Humor as SH, "
+				+ "usr.Adventurous as SA, usr.Ambitious as SAM, usr.Artistic as SAR, usr.WordsOfAffirmation as SW,"
+				+ " usr.PhysicalTouch as SP, usr.ReceivingGifts as SR, usr.QualityTime as SQ, usr.ActsOfService as SAC "
+				+ "FROM UserInfo ui, UserPreferenceList upl, UserDesiresRanking udr, UserSelfRanking usr, Matches m "
+				+ "WHERE ui.username = upl.username AND ui.username = udr.username AND ui.username = usr.username AND ui.username = m.username";
+		ResultSet rs = getQuery(query);
 		
-		String Components = "FirstName, LastName, username";
-		String Table = "UserLogin";
-		String Conditions = "FirstName=\"%s\" OR LastName=\"%s\" OR FirstName=\"%s\" OR LastName=\"%s\"";
-		
-		String query = "SELECT " + Components + " FROM " + Table + " WHERE " + Conditions + ";";
-		query = String.format(query, JF.FirstName, JF.FirstName, JF.LastName, JF.LastName);
-		
-		ResultSet set = getQuery(query);
-		
-		if(set.equals(null))
+		CreateProfileJson prof = new CreateProfileJson();
+		try
 		{
-			return new ProfileWrapper(404);
-		}
-		
-		ProfileWrapper ret = new ProfileWrapper();
-		Profiles addition = null; //new Profiles();
-		
-		// Basically goes through the entire result set and finds all of the data
-		// which gets added to the ProfilesWrapper which would eventually be sent 
-		// to the front-end.
-		
-		// Finds all of the profiles that match with the name/last name provided
-		try {
-			while(set.next())
-			{
-				addition = new Profiles();
-				addition.FirstName = set.getString("FirstName");
-				addition.LastName = set.getString("LastName");
-				addition.UserName = set.getString("username");
-				ret.profiles.add(addition);
+			String g = rs.getString("Gender");
+			if (g.equals("M")){
+				prof.gender = 1;
 			}
-		} catch (SQLException e) {
-			System.out.println("There was a problem b/c you are a bad programmer");
-			e.printStackTrace();
+			else if (g.equals("F")){
+				prof.gender = 2;
+			}
+			else{
+				prof.gender = 3;
+			}
+			g = rs.getString("SexualOrientation");
+			if (g.equals("M")){
+				prof.SexOrient = 1;
+			}
+			else if (g.equals("F")){
+				prof.SexOrient = 2;
+			}
+			else{
+				prof.SexOrient = 3;
+			}
+			prof.first = rs.getString("matchname");
+			prof.UserName = rs.getString("username");
+			prof.selfRank.extroverted = rs.getInt("SE");
+			prof.selfRank.humor = rs.getInt("SH");
+			prof.selfRank.adventure = rs.getInt("SA");
+			prof.selfRank.ambition = rs.getInt("SAM");
+			prof.selfRank.artistic = rs.getInt("SAR");
+			prof.selfRank.wOfAff = rs.getInt("SW");
+			prof.selfRank.physTouch = rs.getInt("SP");
+			prof.selfRank.gifts = rs.getInt("SR");
+			prof.selfRank.qualTime = rs.getInt("SQ");
+			prof.selfRank.service = rs.getInt("SAC");
+			
+			prof.preferRank.extroverted = rs.getInt("Extroverted");
+			prof.preferRank.humor = rs.getInt("Humor");
+			prof.preferRank.adventure = rs.getInt("Adventurous");
+			prof.preferRank.ambition = rs.getInt("Ambitious");
+			prof.preferRank.artistic = rs.getInt("Artistic");
+			prof.preferRank.wOfAff = rs.getInt("WordsOfAffirmation");
+			prof.preferRank.physTouch = rs.getInt("PhysicalTouch");
+			prof.preferRank.gifts = rs.getInt("ReceivingGifts");
+			prof.preferRank.qualTime = rs.getInt("QualityTime");
+			prof.preferRank.service = rs.getInt("ActsOfService");
+		} catch (Exception e)
+		{
+			System.out.println("SOMETHING WAS CAUGHT");
+			prof.ServerMessage = "There was an error";
+			prof.statusCode = 404;
+			return prof;
 		}
-		ret.statusCode = 200;
-		return ret;
+		
+		query = "SELECT FirstName, LastName FROM UserLogin WHERE username=" + prof.UserName + ";";
+		ResultSet rs2 = getQuery(query);
+		try
+		{
+			prof.first = rs2.getString("FirstName");
+			prof.last = rs2.getString("LastName");
+		} catch (Exception e)
+		{
+			System.out.println("There was an exception which is not likely");
+		}
+		
+		
+		prof.ServerMessage = "Got proifle";
+		prof.statusCode = 200;
+		return prof;
+		
 	}
 
 	
@@ -673,6 +728,7 @@ public class DataStore
 		
 	}
 
+	// Thanks to Aayushi!!!!
 	public String getMatch(String usern){
 		String conditions = "username = \"%s\"";
 		
@@ -693,6 +749,8 @@ public class DataStore
 		return toreturn;
 	}
 
+	
+	// Thanks to Aayushi!!!!!
 	@Scheduled (cron = "0 0 0 * * ?")
 	public void matchPairs(){
 		String query = "SELECT ui.username, ui.SexualOrientation, ui.Gender, upl.PreferenceList, udr.Extroverted,"
@@ -700,8 +758,7 @@ public class DataStore
 				+ " udr.ReceivingGifts, udr.QualityTime, udr.ActsOfService, m.matchname, usr.Extroverted as SE, usr.Humor as SH, "
 				+ "usr.Adventurous as SA, usr.Ambitious as SAM, usr.Artistic as SAR, usr.WordsOfAffirmation as SW,"
 				+ " usr.PhysicalTouch as SP, usr.ReceivingGifts as SR, usr.QualityTime as SQ, usr.ActsOfService as SAC "
-				+ "FROM UserInfo ui, "
-				+ "UserPreferenceList upl, UserDesiresRanking udr, UserSelfRanking usr, Matches m "
+				+ "FROM UserInfo ui, UserPreferenceList upl, UserDesiresRanking udr, UserSelfRanking usr, Matches m "
 				+ "WHERE ui.username = upl.username AND ui.username = udr.username AND ui.username = usr.username AND ui.username = m.username";
 		ResultSet rs = getQuery(query);
 		Vector<CreateProfileJson> peop = new Vector<CreateProfileJson>();

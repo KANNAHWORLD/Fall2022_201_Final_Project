@@ -24,11 +24,11 @@ public class User {
 	// There could be a value for last name or first name
 	@RequestMapping(value="/profiles", method = RequestMethod.GET)
 	@ResponseBody
-	public ProfileWrapper findProfile(@RequestBody Profiles request)
+	public CreateProfileJson findProfile(@RequestBody Profiles request)
 	{
 		// Calls DBInstance to find all of the profiles
 		// check DataStore.java to see what the function does
-		ProfileWrapper retWrapper = DBInstance.getProfile(request);
+		CreateProfileJson retWrapper = DBInstance.getProfile(request);
 		return retWrapper;
 	}
 	
@@ -56,7 +56,6 @@ public class User {
     }
 	
 	
-	// TODO:
 	//Retrieves the matches of a person. This might be a tough one to implement
 	//
 	//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
@@ -93,7 +92,7 @@ public class User {
 	// should be implemented sometime by saturday
 	{
 		
-		return new JsonFormats();
+		return DBInstance.getProfile(singleProfile);
 	}
 	
 
@@ -112,33 +111,6 @@ public class User {
 		// check DataStore.java to see what the function does
 		return DBInstance.allProfiles();
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	// 
-	// RANDOM TEST ENDPOINT, NEEDS TO BE removed EVENTUALLY
-	//
-	// This was just for testing purposes, should be eventually phased out or made private
-	@RequestMapping(value="/test", method = RequestMethod.POST)
-	@ResponseBody
-	public String test(@RequestBody String str)
-	{
-		System.out.println(str);
-		
-		System.out.println(str);
-		
-		return "Matching";
-	}
-	
 }
 
 

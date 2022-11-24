@@ -11,6 +11,8 @@ public class MatchThread extends Thread {
     public MatchThread(int p){
         person = p;
     }
+    
+
     public void run(){
         for (int i = person + 1; i < peop.size(); i++){
             int compatability = 0;
@@ -51,6 +53,8 @@ public class MatchThread extends Thread {
             }
         }
     }
+    
+    
     private synchronized void insertTree(int comp, String p1, String p2){
         if (set.get(comp) != null){
             Vector<String> toadd = new Vector<String>();
