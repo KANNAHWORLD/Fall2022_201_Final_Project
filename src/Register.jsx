@@ -35,7 +35,7 @@ export const Register=(props)=>{
               return
         }
 
-        if (!email) {
+        else if (!email) {
             setFormError({
               ...inputError,
               email: "Enter valid email address",
@@ -43,31 +43,53 @@ export const Register=(props)=>{
             return
         }
 
-        if (!password) {
+        else if (!password) {
             setFormError({
               ...inputError,
               password: "Enter a valid password",
             });
             return
         }
-        if (!cpassword) {
+        else if (!cpassword) {
             setFormError({
               ...inputError,
               cpassword: "Confirm Password",
             });
             return
         }
-        if (cpassword !== password) {
+        else if (cpassword !== password) {
             setFormError({
             ...inputError,
               cpassword: "Passwords do not match",
             });
             return;
         }
+        else{
+          //var jsonObject = {username : email};
+          const axios = require('axios');
+          axios({
+              method: 'post',
+              url: 'http://34.130.1.66:8082/OAuth',
+              data: {
+                UserName: email,
+                Password: password
+              }
+            })
+            .then((response) => {
+              console.log(response);
+              //SEND RESPONSE TO NEXT PERSON
+            }, (error) => {
+              //DO NOTHING???
+              setFormError({
+                  ...inputError,
+                  password: "Invalid email or password",
+                });
+            });
+        }
       
           setFormError(inputError);
     }
-
+ 
     return(
         <div className="auth-form-container">
                 <h2>Register</h2>
