@@ -112,6 +112,18 @@ public class DataStore
 		System.out.println("\n\nTESTING AUTHORIZATION");
 		System.out.println(returned.ServerMessage);
 		System.out.println(returned.statusCode);
+		
+		
+		
+		/////////////////////
+		// get profile test
+		//
+		System.out.println("\n\nn\n\n");
+		Profiles prof5 = new Profiles();
+		prof5.UserName = "sid_bansal";
+		CreateProfileJson CPJ5 = ds.getProfile(prof5);
+		System.out.println(CPJ5.age);
+		System.out.println("\n\nn\n\n");
 
 		
 		////////////////////
@@ -628,6 +640,7 @@ public class DataStore
 		CreateProfileJson prof = new CreateProfileJson();
 		try
 		{
+			rs.next();
 			String g = rs.getString("Gender");
 			if (g.equals("M")){
 				prof.gender = 1;
@@ -674,6 +687,7 @@ public class DataStore
 		} catch (Exception e)
 		{
 			System.out.println("SOMETHING WAS CAUGHT");
+			e.printStackTrace();
 			prof.ServerMessage = "There was an error";
 			prof.statusCode = 404;
 			return prof;
