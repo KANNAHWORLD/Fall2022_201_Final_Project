@@ -79,8 +79,8 @@ matchname varchar(255)
 );
 
 INSERT INTO Matches
-VALUES ("sid_bansal", null),
-("sanjana123", null);
+VALUES ("sid_bansal", "-5"),
+("sanjana123", "-5");
 
 CREATE TABLE UserSelfRanking (
 username varchar(255), 

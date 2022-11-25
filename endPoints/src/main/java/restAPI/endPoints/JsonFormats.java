@@ -44,12 +44,18 @@ class BasicInfo extends JsonFormats
 
 class MatchObject extends BasicInfo
 {
-	Rank self;
+	public Rank self;
+}
+
+class MatchPair extends BasicInfo 
+{
+	public String user;
+	public String match;
 }
 
 class Matches extends BasicInfo
 {
-	ArrayList<MatchObject> matches;
+	public ArrayList<MatchObject> matches;
 }
 
 class ProfileWrapper extends JsonFormats
@@ -137,7 +143,7 @@ class Preferences
 	{
 		people = new ArrayList<String>();
 	}
-	ArrayList<String> people;
+	public ArrayList<String> people;
 }
 
 class Rank

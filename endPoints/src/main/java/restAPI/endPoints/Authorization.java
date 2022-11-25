@@ -34,7 +34,7 @@ public class Authorization {
 		Profiles finding = new Profiles();
 		finding.UserName = JF.UserName;
 		
-		CreateProfileJson CPJ = DBInstance.getProfile(finding);
+		CreateProfileJson CPJ = DBInstance.getProfileString(JF.UserName);
 		CPJ.statusCode = 200;
 		CPJ.ServerMessage = "Profile found and retrieved";
 		return CPJ;
