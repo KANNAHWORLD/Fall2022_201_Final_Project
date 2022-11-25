@@ -5,7 +5,10 @@ import java.util.ArrayList;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+import com.google.api.client.json.Json;
+
+@RestController
+@CrossOrigin(origins="*")
 @RequestMapping(value="/user")
 public class User {
 	
@@ -54,6 +57,21 @@ public class User {
 		
 		return endRes;
     }
+
+
+	@RequestMapping(value="/changeMatch", method = RequestMethod.POST)
+	@ResponseBody
+    public void changeMatch(@RequestBody MatchPair person) 
+	{
+		//Database Query needs to be done with this
+		System.out.println("here");
+		// Once the query is over
+		// endRes will have an error code and a ServerMessage, both of which will be sent
+		// back to the front end along with the original content of the queried Json
+		DBInstance.changeMatch(person.user, person.match);
+    }
+
+
 	
 	
 	//Retrieves the matches of a person. This might be a tough one to implement
@@ -64,18 +82,18 @@ public class User {
 	// WE SHOULD INCORPORATE MULTITHREDDING HERE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//
 	// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-	@RequestMapping(value="/matches", method = RequestMethod.GET)
-	@ResponseBody
-	
+	@RequestMapping(value="/matches/{usern}", method = RequestMethod.GET)
 	// Currently takes in a basic info object, but this might need to change given people 
 	// are assigned special tokens or something so that we do not have individual
 	// Might want to change this so that it only takes in a username and generates matches
 	// from there since we can just query the database for that.
-	public String match(@RequestBody String user)
+	public CreateProfileJson match(@PathVariable("usern") String usern)
 	{
-		
-		String toret = DBInstance.getMatch(user);
-		return toret;
+		String toret = DBInstance.getMatch(usern);
+		if (toret.equals("-5")){
+			return null;
+		}
+		return DBInstance.getProfileString(toret);
 	}
 	
 	

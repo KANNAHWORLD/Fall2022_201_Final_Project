@@ -16,7 +16,7 @@ public class MatchThread extends Thread {
     public void run(){
         for (int i = person + 1; i < peop.size(); i++){
             int compatability = 0;
-            if (peop.get(i).first == null && peop.get(person).first == null && peop.get(i).SexOrient == peop.get(person).gender && peop.get(person).SexOrient == peop.get(i).gender){
+            if (peop.get(i).first.equals("-5") && peop.get(person).first.equals("-5") && (peop.get(i).SexOrient == peop.get(person).gender || peop.get(i).SexOrient == 3) && (peop.get(person).SexOrient == peop.get(i).gender || peop.get(person).SexOrient == 3)){
                 if (rated.get(peop.get(person).UserName).get(peop.get(i).UserName) == null)
                 {    
                     compatability += (10 - Math.abs(peop.get(i).preferRank.adventure - peop.get(person).selfRank.adventure));
@@ -49,7 +49,7 @@ public class MatchThread extends Thread {
                 else{
                     compatability += (rated.get(peop.get(i).UserName).get(peop.get(person).UserName)*10);
                 }
-                insertTree(compatability, peop.get(i).UserName, peop.get(person).UserName);
+                insertTree(-1*compatability, peop.get(i).UserName, peop.get(person).UserName);
             }
         }
     }
