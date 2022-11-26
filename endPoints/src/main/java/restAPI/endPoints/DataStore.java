@@ -45,6 +45,8 @@ public class DataStore
 		// using cloudsql database
 		DataStore ds = new DataStore();
 		
+		ds.noexceptQuery("USE UserDatabase;");
+		
 		////////////////////////////
 		// TESTS getProfile function
 		// Working!
@@ -59,6 +61,8 @@ public class DataStore
 //		}
 		
 		/////////////////////////////
+		
+		
 		
 		
 		
@@ -126,6 +130,15 @@ public class DataStore
 		System.out.println("\n\nn\n\n");
 
 		
+		
+		//////////////////////
+		// Check username existence 
+		
+		System.out.println(ds.profileExists("sid_bansal"));
+		System.out.println("\n\n\n\n\n");
+		
+		
+		
 		////////////////////
 		// TESTING IF MATCH PAIRS WORKS
 		// Supposedly works
@@ -156,6 +169,28 @@ public class DataStore
 
 	// WERKING!!!
 	// cloud sql instance
+	
+	
+	
+	// Connects to cloud sql database without reinitializing the entire database
+	DataStore()
+	{
+		if(DBConnection != null)
+		{
+			return;
+		}
+		
+		try {
+		//Class.forName("com.mysql.cj.jdbc.Driver");
+		Connection conn = DriverManager.getConnection("jdbc:mysql://34.68.114.207:3306/db201", "root", "dbpassword");
+		DataStore.DBConnection = conn;
+		}catch(Exception e)
+        {
+        	System.out.println("Here");
+            System.out.println(e);
+        }
+	}
+	
 	DataStore(String URL)
 	{
 		try {
@@ -186,7 +221,7 @@ public class DataStore
 	}
 
 	// Uses initializeDatabase()
-	DataStore()
+	DataStore(int x)
 	{
 		try {
 			
@@ -1122,6 +1157,29 @@ public class DataStore
 		}
 		System.out.println(matched);
 		
+	}
+	
+	
+	//returns false if profile exists
+	// return true if profile doesn't exist
+	public boolean profileExists(String user)
+	{
+		String exists;
+		
+		String tables = "UserLogin";
+		String fields = "username";
+		String conditions = "username = \"%s\"";
+		
+		conditions = String.format(conditions, user);
+		
+		exists = "SELECT " + fields + " FROM " + tables + " WHERE " + conditions + ";";
+		ResultSet rs = getQuery(exists);
+		
+		if(rs != null)
+		{
+			return false;
+		}
+		return true;
 	}
 	
 }

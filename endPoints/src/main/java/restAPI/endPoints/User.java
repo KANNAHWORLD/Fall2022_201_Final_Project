@@ -12,7 +12,7 @@ import com.google.api.client.json.Json;
 @RequestMapping(value="/user")
 public class User {
 	
-	DataStore DBInstance = new DataStore();
+	DataStore DBInstance = new DataStore(234);
 	
 	
 	//

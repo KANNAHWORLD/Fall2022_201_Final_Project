@@ -4,6 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
@@ -13,7 +14,7 @@ public class Authorization {
 	// might need to change constructor later on
 	// maybe make this static?
 	// also private
-	private static DataStore DBInstance = new DataStore();
+	private static DataStore DBInstance = new DataStore(123);
 	
 	//Authorizes a new login from a person
 	@RequestMapping(value="/OAuth")
@@ -40,6 +41,21 @@ public class Authorization {
 		CPJ.statusCode = 200;
 		CPJ.ServerMessage = "Profile found and retrieved";
 		return CPJ;
+	}
+	
+	
+	// Checks if a profile already exists
+	@RequestMapping(value="/CPE", method = RequestMethod.GET)
+	@ResponseBody
+	public JsonFormats check(@RequestBody String user)
+	{
+		boolean ret = DBInstance.profileExists(user);
+		if(ret)
+		{
+			return new JsonFormats(200, "Username is not taken");
+		}
+		
+		return new JsonFormats(404, "Username is taken");
 	}
 	
 }
