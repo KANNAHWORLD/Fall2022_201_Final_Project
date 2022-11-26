@@ -29,11 +29,20 @@ LastName varchar(255),
 Age int, 
 SexualOrientation char(1), 
 Instagram varchar(255), 
-UserDescription varchar(255));
+UserDescription varchar(255),
+ImagePath varchar(255));
 
 INSERT INTO UserInfo
-VALUES ("Sid", "Bansal", 19, "S", "@sid_is_awesome", "We love Sid. Man's the whole package. 10/10 would recommend. And don't get me started on his ramen...."),
-("Sanjana", "Ilango", 19, "S", "@otters_are_cute", "I would rant about how amazing Sanjana is, but unfortunately our girl is taken. Aditya's a lucky man.");
+VALUES 
+	("Sid", "Bansal", 19, "S", "@sid_is_awesome", 
+		"We love Sid. Man's the whole package. 10/10 would recommend. And don't get me started on his ramen....",
+		"sid_with_adamchick.jpg"
+	),
+	("Sanjana", "Ilango", 19, "S", "@otters_are_cute", 
+		"I would rant about how amazing Sanjana is, but unfortunately our girl is taken. Aditya's a lucky man.",
+        "sanjana_sleep_in_lecture.jpg"
+	)
+;
 
 CREATE TABLE UserPreferenceList(
 FirstName varchar(255), 
@@ -41,7 +50,8 @@ LastName varchar(255),
 PreferenceList varchar(255));
 
 INSERT INTO UserPreferenceList
-VALUES ("Sid", "Bansal", "Youg for some reason that's beyond me. The other preferences will be added after I figure out how to go about this cuz SQL doesn't have a simple array type"),
+VALUES ("Sid", "Bansal", 
+	"Youg for some reason that's beyond me. The other preferences will be added after I figure out how to go about this cuz SQL doesn't have a simple array type"),
 ("Sanjana", "Ilango", "Aditya");
 
 CREATE TABLE UserDesiresRanking (

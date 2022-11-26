@@ -32,6 +32,7 @@ class BasicInfo extends JsonFormats
 	public int SexOrient;
 	public String insta;
 	public String description;
+	public String imagePath;
 }
 
 class MatchObject extends BasicInfo
