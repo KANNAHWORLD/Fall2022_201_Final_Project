@@ -616,7 +616,7 @@ public class DataStore
 	}
 	
 
-
+/*
 	// POSSIBLY COMPLETE
 	// gets singular profile
 	//
@@ -715,6 +715,8 @@ public class DataStore
 //		return prof;
 //		
 //	}
+	
+	*/
 
 	public CreateProfileJson getProfileString(String usern)
 	{

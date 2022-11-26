@@ -36,9 +36,6 @@ public class User {
 	}
 	
 	
-	
-	
-	// TODO:
 	// This section will create a new profile for the person. It takes in Json formatted data
 	// Queries database, and returns something back, just use your brain
 	@RequestMapping(value="/createProfile", method = RequestMethod.POST)

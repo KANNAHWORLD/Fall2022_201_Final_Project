@@ -22,17 +22,6 @@ public class EndPointsApplication {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 // This is for testing, change is not neededd
 // EVERYTHING BELOW THIS POINT WILL EVENTUALLY BE 
 // DELETED
@@ -40,6 +29,7 @@ public class EndPointsApplication {
 @Controller
 class test2{
 	@PostMapping("/create")
+	@CrossOrigin(origins="*")
 	@ResponseBody
 	void createProduct(@RequestBody simpleTestJson STJ) 
 	{
@@ -50,6 +40,7 @@ class test2{
 }
 
 @Controller
+@CrossOrigin(origins="*")
 class HelloController {
 
 	@GetMapping("/")
