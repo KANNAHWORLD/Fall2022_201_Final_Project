@@ -1,5 +1,6 @@
 import logo from './logo.svg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import plus from './pink-plus-sign.jpeg';
 import Select from 'react-dropdown-select';
 import "@fontsource/comfortaa";
@@ -25,9 +26,27 @@ function App() {
   const [people, setPeople] = useState([]);
   const [rating, setRating] = useState([]);
 
-  const personOptions = [
-    {label: "Harry", value: 0},
-    {label: "Sally", value: 1}];
+  const [personOptions, setPersonOptions] = useState([]);
+
+  //CONNECTING DROPDOWN TO BACKEND
+  const [post, setPost] = useState();
+
+  useEffect(() => {
+    axios.get("http://34.130.1.66:8082/user/allprofiles").then((response) => {
+     //alert(response.status);
+     setPost(response.data);
+    
+     for (let i = 0; i < post.length; i++) {
+       personOptions.push({
+         label: post[i].FirstName + " " + post[i].LastName + " (@" + post[i].UserName + ")",
+         value: i
+       });
+      }
+    }).catch(error => alert(error));
+  
+ },[]);
+  
+
   const ratingOptions = [
     {label: 1, value: 0},
     {label: 2, value: 1},
@@ -59,8 +78,6 @@ function App() {
 
   const submitted = (event) => {
     //alert("SUCCESSFULLY SUBMITTED WITH: " + "extroverted scale is " + extrovertedScale + " humor scale is " + humorScale + " adventure scale is now " + adventureScale + " ambitious scale is " + ambitiousScale + " artistic scale is " + artisticScale + " affirmation rank is " + affirmationRank + " touch rank is " + touchRank + " gifts rank is " + giftsRank + " quality rank is " + qualityRank + " service rank is " + serviceRank + "");
-    //alert("CLICKED");
-    // clicked(e);
     let str = "";
     for (let i = 0; i < people.length; i++) {
       str += "person " + people[i].name + " with rating " + rating[i].rating + "\n";
@@ -68,33 +85,21 @@ function App() {
     alert(str);
   }
 
-  // function clicked(e) {
-  //   e.target.setAttribute('src', {formButtonSelected});
-  //   e.target.setAttribute('alt', 'logo');
-  // }
-
-  // myfunction = ( () => {
-  //     console.log("CLICKED");
-  //   }
-  // )
-  
   return (
 
     <div className="App">
+        
+       
         <p>
           HEADER HERE
         </p>
+
+         
+
         <h2>
           What do you look for in a partner?
         </h2>
-        {/* <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
+        
 
         <div className = "App-sq"
         style = {
