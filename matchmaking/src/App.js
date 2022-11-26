@@ -30,18 +30,41 @@ function App() {
 
   //CONNECTING DROPDOWN TO BACKEND
   const [post, setPost] = useState();
+  
 
   useEffect(() => {
     axios.get("http://34.130.1.66:8082/user/allprofiles").then((response) => {
      //alert(response.status);
-     setPost(response.data);
+     //alert(response.data);
+     let p = [];
+     setPost(post => response.data);
+     p = response.data;
+     //alert(p.length);
+     //alert(post);
     
-     for (let i = 0; i < post.length; i++) {
-       personOptions.push({
-         label: post[i].FirstName + " " + post[i].LastName + " (@" + post[i].UserName + ")",
-         value: i
-       });
-      }
+    //  for (let i = 0; i < post.length; i++) {
+    //    personOptions.push({
+    //      label: post[i].FirstName + " " + post[i].LastName + " (@" + post[i].UserName + ")",
+    //      value: i
+    //    });
+    //   }
+    // let empty = [];
+    // setPersonOptions(empty);
+    //setPersonOptions([]);
+    //setPersonOptions([]);
+    //alert(personOptions.length);
+    if (personOptions.length === 0) {
+      for (let i = 0; i < p.length; i++) {
+        alert(p[i].FirstName);
+        personOptions.push({
+          label: p[i].FirstName + " " + p[i].LastName + " (@" + p[i].UserName + ")",
+          value: i
+        });
+        //setPersonOptions([...personOptions, {label: p[i].FirstName, value: i}]);
+       }
+    }
+    
+     //alert(personOptions.length);
     }).catch(error => alert(error));
   
  },[]);
