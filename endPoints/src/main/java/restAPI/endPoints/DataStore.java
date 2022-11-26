@@ -411,7 +411,6 @@ public class DataStore
 	//
 	// RETURNS NULL IF THE RESULT SET IS EMPTY!!
 	public ResultSet getQuery(String query) {
-		
 		try {
 			Statement st = DBConnection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
 			ResultSet ret = st.executeQuery(query);
@@ -1002,8 +1001,6 @@ public class DataStore
 	// Might return result set
 	public JsonFormats authorize(CreateProfileJson JF)
 	{
-		
-		
 		String Components = "username";
 		String Table = "UserLogin";
 		String Conditions = "username=\"%s\" AND password=\"%s\"";
