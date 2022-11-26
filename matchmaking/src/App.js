@@ -55,7 +55,7 @@ function App() {
     //alert(personOptions.length);
     if (personOptions.length === 0) {
       for (let i = 0; i < p.length; i++) {
-        alert(p[i].FirstName);
+        //alert(p[i].FirstName);
         personOptions.push({
           label: p[i].FirstName + " " + p[i].LastName + " (@" + p[i].UserName + ")",
           value: i
