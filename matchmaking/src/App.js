@@ -101,11 +101,45 @@ function App() {
 
   const submitted = (event) => {
     //alert("SUCCESSFULLY SUBMITTED WITH: " + "extroverted scale is " + extrovertedScale + " humor scale is " + humorScale + " adventure scale is now " + adventureScale + " ambitious scale is " + ambitiousScale + " artistic scale is " + artisticScale + " affirmation rank is " + affirmationRank + " touch rank is " + touchRank + " gifts rank is " + giftsRank + " quality rank is " + qualityRank + " service rank is " + serviceRank + "");
-    let str = "";
-    for (let i = 0; i < people.length; i++) {
-      str += "person " + people[i].name + " with rating " + rating[i].rating + "\n";
-    }
-    alert(str);
+    // let str = "";
+    // for (let i = 0; i < people.length; i++) {
+    //   str += "person " + people[i].name + " with rating " + rating[i].rating + "\n";
+    // }
+    // alert(str);
+    // axios
+    //   .post('http://34.130.1.66:8082/create', {
+    //     x:"hello"
+    //   })
+    //   .then((response) => {
+    //     alert(response.status);
+    //   }).catch(error => (alert(error)));
+    // const customConfig = {
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   }
+    // }
+    // const result = axios.post('http://34.130.1.66:8082/create', JSON.stringify({"x": 'hello'}), {
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   }
+    // })
+    //               .then((response) => {
+    //                 alert(response.status);
+    //               }).catch(error => (alert(error)));
+    // //alert(result);
+
+    const result = axios.post(
+      'http://34.130.1.66:8082/create',
+      {'x' : 'ayo'},
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin' : '*',
+          'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        }
+      }
+    ).catch(error => (alert(error)));
+    //alert(result.data);
   }
 
   return (
