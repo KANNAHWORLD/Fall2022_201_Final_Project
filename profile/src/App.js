@@ -1,23 +1,41 @@
-import React, { useState } from 'react';
+import React from 'react';
 import $ from 'jquery';
-import logo from './logo.png';
 import icon from './user-plus-icon.png';
-import formButton from './form-button.png';
-import formButtonSelected from './form-button-selected.png';
+// import formButton from '../images/form-button.png';
+// import formButtonSelected from '../images/form-button-selected.png';
 import './App.css';
-import './Fonts.css';
+
+import { useNavigate } from "react-router-dom";
 
 function App() {
-  const [extrovertedScale, setExtrovertedScale] = useState(0);
-  const [humorScale, setHumorScale] = useState(0);
-  const [adventureScale, setAdventureScale] = useState(0);
-  const [ambitiousScale, setAmbitiousScale] = useState(0);
-  const [artisticScale, setArtisticScale] = useState(0);
-  const [affirmationRank, setAffirmationRank] = useState(0);
-  const [touchRank, setTouchRank] = useState(0);
-  const [giftsRank, setGiftsRank] = useState(0);
-  const [qualityRank, setQualityRank] = useState(0);
-  const [serviceRank, setServiceRank] = useState(0);
+  let navigate = useNavigate(); 
+  const routeChange = () =>{ 
+
+    var fName = document.querySelector('input[name="first name"]').value;
+    var lName = document.querySelector('input[name="last name"]').value;
+    var age = document.querySelector('input[name="age"]').value;
+    var gender = document.getElementById("gender").value;
+    var sexuality = document.getElementById("sexuality").value;
+    var media = document.querySelector('input[name="media"]').value;
+    var descrip = document.getElementById("description").value
+
+    var one = document.querySelector('input[name="one"]:checked').value;
+    var two = document.querySelector('input[name="two"]:checked').value;
+    var three = document.querySelector('input[name="three"]:checked').value;
+    var four = document.querySelector('input[name="four"]:checked').value;
+    var five = document.querySelector('input[name="five"]:checked').value;
+    var six = document.querySelector('input[name="six"]:checked').value;
+    var seven = document.querySelector('input[name="seven"]:checked').value;
+    var eight = document.querySelector('input[name="eight"]:checked').value;
+    var nine = document.querySelector('input[name="nine"]:checked').value;
+    var ten = document.querySelector('input[name="ten"]:checked').value;
+
+    let full = [fName, lName, age, gender, sexuality, media, descrip, one, two, three, four, five, six, seven, eight, nine, ten];
+
+    let path = `../questionnaire`; 
+    navigate(path,{state:full});
+  }
+
   $(document).ready(function() {
 
     function fasterPreview( uploader ) {
@@ -42,12 +60,8 @@ function App() {
 
   
 });
-
-  return (
-    <div>
-      <header className="App-header">
-        <img src={logo} className="logo" alt="logo" />
-      </header>
+    return (
+      <div className="temp">
       <form>
       <body className="Main-body">
         <div className="Title">
@@ -84,7 +98,7 @@ function App() {
 
         <div className="Input">
           Gender: 
-          <select name="gender" className="Select" required>
+          <select name="gender" className="Select" id="gender" required>
             <option value="none" selected disabled hidden>Select an Option</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -94,7 +108,7 @@ function App() {
 
         <div className="Input">
           Interested In: 
-          <select name="gender" className="Select" required>
+          <select name="sexuality" className="Select" id="sexuality" required>
             <option value="none" selected disabled hidden>Select an Option</option>
             <option value="male">Male</option>
             <option value="female">Female</option>
@@ -106,14 +120,14 @@ function App() {
         <form className="Input">
           <label>
             Social Media:
-            <input type="text" name="name" className="Box"/>
+            <input type="text" name="media" className="Box"/>
           </label>
         </form>
 
         <form className="Input">
           <label>
             Description:
-            <textarea rows="4" cols="50" placeholder="Enter text" className="TextArea">
+            <textarea rows="4" cols="50" id = "description" placeholder="Enter text" className="TextArea">
             
             </textarea>
           </label>
@@ -132,26 +146,21 @@ function App() {
 
           <ul>
             <p>Very Introverted</p>
-            <li>
-              1
-              <button className = "App-form-option" onClick = {() => setExtrovertedScale(1)}><img src={extrovertedScale === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              2
-              <button className = "App-form-option" onClick = {() => setExtrovertedScale(2)}><img src={extrovertedScale === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              3
-              <button className = "App-form-option" onClick = {() => setExtrovertedScale(3)}><img src={extrovertedScale === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              4
-              <button className = "App-form-option" onClick = {() => setExtrovertedScale(4)}><img src={extrovertedScale === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              5
-              <button className = "App-form-option" onClick = {() => setExtrovertedScale(5)}><img src={extrovertedScale === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="extrovert" className = "radio-style">1<br />
+              <input type="radio" id="one-one" name="one" value="1" checked/>
+            </label>
+            <label for="extrovert" className = "radio-style">2<br />
+              <input type="radio" id="one-two" name="one" value="2" />
+            </label>
+            <label for="extrovert" className = "radio-style">3<br />
+              <input type="radio" id="one-three" name="one" value="3" />
+            </label>
+            <label for="extrovert" className = "radio-style">4<br />
+              <input type="radio" id="one-four" name="one" value="4" />
+            </label>
+            <label for="extrovert" className = "radio-style">5<br />
+              <input type="radio" id="one-five" name="one" value="5" />
+            </label>
             <p>Very Extroverted</p>
           </ul>
 
@@ -164,26 +173,21 @@ function App() {
 
           <ul>
             <p>Doesn't Matter</p>
-            <li>
-              1
-              <button className = "App-form-option" onClick = {() => setHumorScale(1)}><img src={humorScale === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              2
-              <button className = "App-form-option" onClick = {() => setHumorScale(2)}><img src={humorScale === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              3
-              <button className = "App-form-option" onClick = {() => setHumorScale(3)}><img src={humorScale === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              4
-              <button className = "App-form-option" onClick = {() => setHumorScale(4)}><img src={humorScale === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              5
-              <button className = "App-form-option" onClick = {() => setHumorScale(5)}><img src={humorScale === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="humor" className = "radio-style">1<br />
+              <input type="radio" id="two-one" name="two" value="1" checked/>
+            </label>
+            <label for="humor" className = "radio-style">2<br />
+              <input type="radio" id="two-two" name="two" value="2" />
+            </label>
+            <label for="humor" className = "radio-style">3<br />
+              <input type="radio" id="two-three" name="two" value="3" />
+            </label>
+            <label for="humor" className = "radio-style">4<br />
+              <input type="radio" id="two-four" name="two" value="4" />
+            </label>
+            <label for="humor" className = "radio-style">5<br />
+              <input type="radio" id="two-five" name="two" value="5" />
+            </label>
             <p>Very Important</p>
           </ul>
 
@@ -196,26 +200,21 @@ function App() {
 
           <ul>
             <p>Home Body</p>
-            <li>
-              1
-              <button className = "App-form-option" onClick = {() => setAdventureScale(1)}><img src={adventureScale === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              2
-              <button className = "App-form-option" onClick = {() => setAdventureScale(2)}><img src={adventureScale === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              3
-              <button className = "App-form-option" onClick = {() => setAdventureScale(3)}><img src={adventureScale === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              4
-              <button className = "App-form-option" onClick = {() => setAdventureScale(4)}><img src={adventureScale === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              5
-              <button className = "App-form-option" onClick = {() => setAdventureScale(5)}><img src={adventureScale === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="adventure" className = "radio-style">1<br />
+              <input type="radio" id="three-one" name="three" value="1" checked/>
+            </label>
+            <label for="adventure" className = "radio-style">2<br />
+              <input type="radio" id="three-two" name="three" value="2" />
+            </label>
+            <label for="adventure" className = "radio-style">3<br />
+              <input type="radio" id="three-three" name="three" value="3" />
+            </label>
+            <label for="adventure" className = "radio-style">4<br />
+              <input type="radio" id="three-four" name="three" value="4" />
+            </label>
+            <label for="adventure" className = "radio-style">5<br />
+              <input type="radio" id="three-five" name="three" value="5" />
+            </label>
             <p>Total Daredevil</p>
           </ul>
 
@@ -228,26 +227,21 @@ function App() {
 
           <ul>
             <p>Doesn't Matter</p>
-            <li>
-              1
-              <button className = "App-form-option" onClick = {() => setAmbitiousScale(1)}><img src={ambitiousScale === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              2
-              <button className = "App-form-option" onClick = {() => setAmbitiousScale(2)}><img src={ambitiousScale === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              3
-              <button className = "App-form-option" onClick = {() => setAmbitiousScale(3)}><img src={ambitiousScale === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              4
-              <button className = "App-form-option" onClick = {() => setAmbitiousScale(4)}><img src={ambitiousScale === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              5
-              <button className = "App-form-option" onClick = {() => setAmbitiousScale(5)}><img src={ambitiousScale === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="ambition" className = "radio-style">1<br />
+              <input type="radio" id="four-one" name="four" value="1" checked/>
+            </label>
+            <label for="ambition" className = "radio-style">2<br />
+              <input type="radio" id="four-two" name="four" value="2" />
+            </label>
+            <label for="ambition" className = "radio-style">3<br />
+              <input type="radio" id="four-three" name="four" value="3" />
+            </label>
+            <label for="ambition" className = "radio-style">4<br />
+              <input type="radio" id="four-four" name="four" value="4" />
+            </label>
+            <label for="ambition" className = "radio-style">5<br />
+              <input type="radio" id="four-five" name="four" value="5" />
+            </label>
             <p>Very Ambitious</p>
           </ul>
 
@@ -260,26 +254,21 @@ function App() {
 
           <ul>
             <p>Doesn't Matter</p>
-            <li>
-              1
-              <button className = "App-form-option" onClick = {() => setArtisticScale(1)}><img src={artisticScale === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              2
-              <button className = "App-form-option" onClick = {() => setArtisticScale(2)}><img src={artisticScale === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              3
-              <button className = "App-form-option" onClick = {() => setArtisticScale(3)}><img src={artisticScale === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              4
-              <button className = "App-form-option" onClick = {() => setArtisticScale(4)}><img src={artisticScale === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              5
-              <button className = "App-form-option" onClick = {() => setArtisticScale(5)}><img src={artisticScale === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="art" className = "radio-style">1<br />
+              <input type="radio" id="five-one" name="five" value="1" checked/>
+            </label>
+            <label for="art" className = "radio-style">2<br />
+              <input type="radio" id="five-two" name="five" value="2" />
+            </label>
+            <label for="art" className = "radio-style">3<br />
+              <input type="radio" id="five-three" name="five" value="3" />
+            </label>
+            <label for="art" className = "radio-style">4<br />
+              <input type="radio" id="five-four" name="five" value="4" />
+            </label>
+            <label for="art" className = "radio-style">5<br />
+              <input type="radio" id="five-five" name="five" value="5" />
+            </label>
             <p>Very Artsy</p>
           </ul>
 
@@ -292,143 +281,108 @@ function App() {
 
           <ul className = "App-affirmations">
             <p className = "App-language">Words of Affirmation</p>
-            <li>
-              1
-              <button className = "App-form-option" onClick = {() => setAffirmationRank(1)}><img src={affirmationRank === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              2
-              <button className = "App-form-option" onClick = {() => setAffirmationRank(2)}><img src={affirmationRank === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              3
-              <button className = "App-form-option" onClick = {() => setAffirmationRank(3)}><img src={affirmationRank === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              4
-              <button className = "App-form-option" onClick = {() => setAffirmationRank(4)}><img src={affirmationRank === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              5
-              <button className = "App-form-option" onClick = {() => setAffirmationRank(5)}><img src={affirmationRank === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="affirmation" className = "radio-style">1<br />
+              <input type="radio" id="six-one" name="six" value="1" checked/>
+            </label>
+            <label for="affirmation" className = "radio-style">2<br />
+              <input type="radio" id="six-two" name="six" value="2" />
+            </label>
+            <label for="affirmation" className = "radio-style">3<br />
+              <input type="radio" id="six-three" name="six" value="3" />
+            </label>
+            <label for="affirmation" className = "radio-style">4<br />
+              <input type="radio" id="six-four" name="six" value="4" />
+            </label>
+            <label for="affirmation" className = "radio-style">5<br />
+              <input type="radio" id="six-five" name="six" value="5" />
+            </label>
           </ul>
 
           <ul className = "App-touch">
             <p className = "App-language">Physical Touch</p>
-            <li>
-              <button className = "App-form-option" onClick = {() => setTouchRank(1)}><img src={touchRank === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setTouchRank(2)}><img src={touchRank === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setTouchRank(3)}><img src={touchRank === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setTouchRank(4)}><img src={touchRank === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setTouchRank(5)}><img src={touchRank === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="touch" className = "radio-style">1<br />
+              <input type="radio" id="seven-one" name="seven" value="1" checked/>
+            </label>
+            <label for="touch" className = "radio-style">2<br />
+              <input type="radio" id="seven-two" name="seven" value="2" />
+            </label>
+            <label for="touch" className = "radio-style">3<br />
+              <input type="radio" id="seven-three" name="seven" value="3" />
+            </label>
+            <label for="touch" className = "radio-style">4<br />
+              <input type="radio" id="seven-four" name="seven" value="4" />
+            </label>
+            <label for="touch" className = "radio-style">5<br />
+              <input type="radio" id="seven-five" name="seven" value="5" />
+            </label>
           </ul>
 
           <ul className = "App-gifts">
             <p className = "App-language">Receiving Gifts</p>
-            <li>
-              <button className = "App-form-option" onClick = {() => setGiftsRank(1)}><img src={giftsRank === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setGiftsRank(2)}><img src={giftsRank === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setGiftsRank(3)}><img src={giftsRank === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setGiftsRank(4)}><img src={giftsRank === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setGiftsRank(5)}><img src={giftsRank === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="gift" className = "radio-style">1<br />
+              <input type="radio" id="eight-one" name="eight" value="1" checked/>
+            </label>
+            <label for="gift" className = "radio-style">2<br />
+              <input type="radio" id="eight-two" name="eight" value="2" />
+            </label>
+            <label for="gift" className = "radio-style">3<br />
+              <input type="radio" id="eight-three" name="eight" value="3" />
+            </label>
+            <label for="gift" className = "radio-style">4<br />
+              <input type="radio" id="eight-four" name="eight" value="4" />
+            </label>
+            <label for="gift" className = "radio-style">5<br />
+              <input type="radio" id="eight-five" name="eight" value="5" />
+            </label>
           </ul>
 
           <ul className = "App-quality">
             <p className = "App-language">Quality Time</p>
-            <li>
-              <button className = "App-form-option" onClick = {() => setQualityRank(1)}><img src={qualityRank === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setQualityRank(2)}><img src={qualityRank === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setQualityRank(3)}><img src={qualityRank === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setQualityRank(4)}><img src={qualityRank === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setQualityRank(5)}><img src={qualityRank === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="time" className = "radio-style">1<br />
+              <input type="radio" id="nine-one" name="nine" value="1" checked/>
+            </label>
+            <label for="time" className = "radio-style">2<br />
+              <input type="radio" id="nine-two" name="nine" value="2" />
+            </label>
+            <label for="time" className = "radio-style">3<br />
+              <input type="radio" id="nine-three" name="nine" value="3" />
+            </label>
+            <label for="time" className = "radio-style">4<br />
+              <input type="radio" id="nine-four" name="nine" value="4" />
+            </label>
+            <label for="time" className = "radio-style">5<br />
+              <input type="radio" id="nine-five" name="nine" value="5" />
+            </label>
           </ul>
 
           <ul className = "App-service">
             <p className = "App-language">Acts of Service</p>
-            <li>
-              <button className = "App-form-option" onClick = {() => setServiceRank(1)}><img src={serviceRank === 1 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setServiceRank(2)}><img src={serviceRank === 2 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setServiceRank(3)}><img src={serviceRank === 3 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setServiceRank(4)}><img src={serviceRank === 4 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
-            <li>
-              <button className = "App-form-option" onClick = {() => setServiceRank(5)}><img src={serviceRank === 5 ? formButtonSelected : formButton} className="App-logo" alt="logo" /></button>
-            </li>
+            <label for="service" className = "radio-style">1<br />
+              <input type="radio" id="ten-one" name="ten" value="1" checked/>
+            </label>
+            <label for="service" className = "radio-style">2<br />
+              <input type="radio" id="ten-two" name="ten" value="2" />
+            </label>
+            <label for="service" className = "radio-style">3<br />
+              <input type="radio" id="ten-three" name="ten" value="3" />
+            </label>
+            <label for="service" className = "radio-style">4<br />
+              <input type="radio" id="ten-four" name="ten" value="4" />
+            </label>
+            <label for="service" className = "radio-style">5<br />
+              <input type="radio" id="ten-five" name="ten" value="5" />
+            </label>
           </ul>
         </div>
       </body>
       </form>
-      <input type="submit" className="continue-button" value="Continue"/>
+      <input type="submit" className="continue-button" value="Continue" onClick={routeChange}/>
 
       <br/>
       <br/>
       
     </div>
-  );
-}
-
-// const Dropdown = ({ trigger, menu }) => {
-//   const [open, setOpen] = React.useState(false);
-
-//   const handleOpen = () => {
-//     setOpen(!open);
-//   };
-
-//   return (
-//     <div className="dropdown">
-//       {React.cloneElement(trigger, {
-//         onClick: handleOpen,
-//       })}
-//       {open ? (
-//         <ul className="menu">
-//           {menu.map((menuItem, index) => (
-//             <li key={index} className="menu-item">
-//               {React.cloneElement(menuItem, {
-//                 onClick: () => {
-//                   menuItem.props.onClick();
-//                   setOpen(false);
-//                 },
-//               })}
-//             </li>
-//           ))}
-//         </ul>
-//       ) : null}
-//     </div>
-//   );
-// };
-
-export default App;
+    );
+  }
+  
+  export default App;
