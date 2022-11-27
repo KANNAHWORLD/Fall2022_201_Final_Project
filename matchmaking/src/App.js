@@ -100,46 +100,73 @@ function App() {
   }
 
   const submitted = (event) => {
-    //alert("SUCCESSFULLY SUBMITTED WITH: " + "extroverted scale is " + extrovertedScale + " humor scale is " + humorScale + " adventure scale is now " + adventureScale + " ambitious scale is " + ambitiousScale + " artistic scale is " + artisticScale + " affirmation rank is " + affirmationRank + " touch rank is " + touchRank + " gifts rank is " + giftsRank + " quality rank is " + qualityRank + " service rank is " + serviceRank + "");
-    // let str = "";
-    // for (let i = 0; i < people.length; i++) {
-    //   str += "person " + people[i].name + " with rating " + rating[i].rating + "\n";
-    // }
-    // alert(str);
-    // axios
-    //   .post('http://34.130.1.66:8082/create', {
-    //     x:"hello"
-    //   })
-    //   .then((response) => {
-    //     alert(response.status);
-    //   }).catch(error => (alert(error)));
-    // const customConfig = {
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   }
-    // }
-    // const result = axios.post('http://34.130.1.66:8082/create', JSON.stringify({"x": 'hello'}), {
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   }
-    // })
-    //               .then((response) => {
-    //                 alert(response.status);
-    //               }).catch(error => (alert(error)));
-    // //alert(result);
+    let p = [];
+    for (let i = 0; i < people.length; i++) {
+      let str = people[i].name;
+      let index1 = str.length-1;
+      while (str.charAt(index1) != '(') {
+        index1--;
+      }
+      let text = str.substring(index1+2, str.length-1);
+
+      p.push(text);
+      p.push((rating[i].rating).toString());
+    }
+
+    let str = "";
+    for (let i = 0; i < p.length; i++) {
+      str += p[i] + " ";
+    }
 
     const result = axios.post(
-      'http://34.130.1.66:8082/create',
-      {'x' : 'ayo'},
+      'http://34.130.1.66:8082/user/createProfile',
+      {
+        'first': 'Ronald',
+        'last': 'Weasley',
+        'age': 4,
+        'SexOrient': 3,
+        'gender': 5,
+        'insta': 'insta',
+        'description': 'AAA',
+        'UserName': 'ronron',
+        'Password': 'hello',
+        'prefered': {
+            'people': p
+        },
+        'selfRank': {
+            'extroverted': 3,
+            'humor': 4,
+            'adventure': 3,
+            'ambition': 9,
+            'artistic': 4,
+            'wOfAff': 3,
+            'physTouch': 3,
+            'gifts': 23,
+            'qualTime': 3,
+            'service': 8
+        },
+        'preferRank': {
+            'extroverted': extrovertedScale,
+            'humor': humorScale,
+            'adventure': adventureScale,
+            'ambition': ambitiousScale,
+            'artistic': artisticScale,
+            'wOfAff': affirmationRank,
+            'physTouch': touchRank,
+            'gifts': giftsRank,
+            'qualTime': qualityRank,
+            'service': serviceRank
+        }
+    },
       {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'application/json; charset=utf-8',
           'Access-Control-Allow-Origin' : '*',
           'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
         }
       }
-    ).catch(error => (alert(error)));
-    //alert(result.data);
+    ).then((response) => {/*alert(response.status)*/}).catch(error => (alert(error)));
+
   }
 
   return (
