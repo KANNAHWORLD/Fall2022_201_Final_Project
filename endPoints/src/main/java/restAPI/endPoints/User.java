@@ -1,16 +1,20 @@
 package restAPI.endPoints;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +29,7 @@ import ch.qos.logback.core.util.FileUtil;
 @RequestMapping(value="/user")
 public class User {
 	
-	DataStore DBInstance = new DataStore();
+	DataStore DBInstance = new DataStore(1234);
 	
 	
 	//
@@ -132,27 +136,78 @@ public class User {
 
 	
 	@PostMapping("/upload")
-    public void uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("username") String username) {
+    public JsonFormats uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("username") String username) {
         try {
+        	
+        	String imageType = ".png";
             
             byte[] filebytes = files[0].getBytes();
+            String dir = System.getProperty("user.dir");
+            dir += "/images";
+            File direct = new File(dir);
+            direct.mkdir();
             
-            File newFile = new File("images/"+ username + ".png");
+            dir += "/" + username + imageType;
+            
+            File newFile = new File(dir);
+            newFile.createNewFile();
+            //newFile.createNewFile();
             
             OutputStream os = new FileOutputStream(newFile);
            
             os.write(filebytes);
             
             os.close();
+            System.out.println("Created image for" + username);
+            System.out.println("Adding to database");
             
-
+            String table = "ImageMap";
+            String values = "VALUES(\"%s\", \"%s\")";
+            values = String.format(values, username, dir);
+            String SQLquery = "INSERT INTO " + table + " " + values + ";";
+            DBInstance.noexceptQuery(SQLquery);
+            
         	} catch (Exception e)
 	        {
         		e.printStackTrace();
         		System.out.println("HEHEHEH");
+        		return new JsonFormats(417, "An error occured");
 	        }
+        
+       return new JsonFormats(200, "Image submitted");
 	}
 	
+
+	@GetMapping(value = "/getImg/{usern}", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+	public @ResponseBody byte[] getFile(@PathVariable("usern") String usern) throws IOException {
+		
+		String table = "ImageMap";
+		String neededComponents = "path";
+		String conditions = "username=\""+usern+ "\"";
+		String query = "SELECT " + neededComponents + " FROM " + table + " WHERE " + conditions + ";";
+		ResultSet rs = DBInstance.getQuery(query);
+		
+		
+		String path = null;
+		try {
+			rs.next();
+			path = rs.getString(neededComponents);
+		} catch (SQLException e) {
+			System.out.println("There was an error retrieving file path, maybe userimage does not exist");
+			e.printStackTrace();
+			return null;
+		}
+		
+		File img = new File(path);
+		FileInputStream fl = new FileInputStream(img);
+		byte[] arr = new byte[(int)img.length()];
+		  
+        // Reading file content to byte array
+        // using standard read() method
+        fl.read(arr);
+		fl.close();
+		return arr;
+	}
 
 	
 	// FOR SANNJAN DROP DOWN BAR!!!!!!!!!!!!!

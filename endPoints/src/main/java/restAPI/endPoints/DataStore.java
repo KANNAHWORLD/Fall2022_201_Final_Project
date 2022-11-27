@@ -395,7 +395,7 @@ public class DataStore
 				noexceptQuery(query);
 				
 				// Debug purposes
-				// System.out.println(query);
+//				 System.out.println(query);
 				//
 				
 				reading = null;

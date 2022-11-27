@@ -14,7 +14,7 @@ public class Authorization {
 	// might need to change constructor later on
 	// maybe make this static?
 	// also private
-	private static DataStore DBInstance = new DataStore();
+	private static DataStore DBInstance = new DataStore(65);
 	
 	//Authorizes a new login from a person
 	@RequestMapping(value="/OAuth")
