@@ -1,7 +1,9 @@
 import React, {useState} from "react";
 import axios from 'axios';
+import {Link, useNavigate} from 'react-router-dom';
 
 export const Register=(props)=>{
+    const navigate = useNavigate();
     const[email, setEmail]=useState('');
     const[password,setPassword]=useState('');
     const[cpassword,setCPassword]=useState('');
@@ -70,21 +72,29 @@ export const Register=(props)=>{
           const axios = require('axios');
           axios({
               method: 'post',
-              url: 'http://34.130.1.66:8082/OAuth',
+              url: 'http://34.130.1.66:8082/CPE',
               data: {
-                UserName: email,
-                Password: password
+                UserName: email
               }
             })
             .then((response) => {
-              console.log(response);
-              //SEND RESPONSE TO NEXT PERSON
+              var code = response.data['statusCode'];
+              if(code === '404'){
+                setFormError({
+                  ...inputError,
+                  cpassword: "Account already exists",
+                });
+              }
+              else{
+                alert("it worked");
+                //redirect to angela's page and send username and password info
+                //navigate("/profile",{user:{userName:email,password:password}});
+              }
             }, (error) => {
               //DO NOTHING???
-              setFormError({
-                  ...inputError,
-                  password: "Invalid email or password",
-                });
+              alert("Error");
+              console.log(error);
+              
             });
         }
       

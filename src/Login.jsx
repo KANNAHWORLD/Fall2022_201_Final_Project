@@ -1,7 +1,9 @@
 import React, {useState} from "react";
 import axios from 'axios';
+import {Link, useNavigate} from 'react-router-dom';
 
 export const Login=(props)=>{
+    const navigate = useNavigate();
     const[email, setEmail]=useState('');
     const[password,setPassword]=useState('');
 
@@ -9,7 +11,7 @@ export const Login=(props)=>{
         e.preventDefault();
         console.log(email);
     }
-
+ 
     const validateInput=(e)=>{
         e.preventDefault();
         let inputError={
@@ -23,7 +25,7 @@ export const Login=(props)=>{
                 email: "Enter valid email address",
                 password: "Enter a valid password",
               });
-              return
+              return;
         }
 
         else if (!email) {
@@ -31,7 +33,7 @@ export const Login=(props)=>{
               ...inputError,
               email: "Enter valid email address",
             });
-            return
+            return;
         }
 
         else if (!password) {
@@ -39,7 +41,7 @@ export const Login=(props)=>{
               ...inputError,
               password: "Enter a valid password",
             });
-            return
+            return;
         }
         else{
             //var jsonObject = {username : email};
@@ -55,6 +57,7 @@ export const Login=(props)=>{
               .then((response) => {
                 console.log(response);
                 //SEND RESPONSE TO NEXT PERSON
+                //navigate("/profile",{user:{userName:email,password:password}});
               }, (error) => {
                 //DO NOTHING???
                 setFormError({
