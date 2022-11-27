@@ -107,7 +107,7 @@ public class User {
 	// should be implemented sometime by saturday
 	{
 		
-		return DBInstance.getProfileString(singleProfile.UserName);
+		return DBInstance.getProfileStringNoMatches(singleProfile.UserName);
 	}
 	
 

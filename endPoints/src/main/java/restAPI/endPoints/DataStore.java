@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -760,8 +761,111 @@ public class DataStore
 //	}
 	
 	*/
-
+	
 	public CreateProfileJson getProfileString(String usern)
+	{
+		// Builds the SQL statement before it is queried
+		// Then, the percent signs are filled with the parameters
+		// by doing .format
+		
+		String col = "m.username = \"%s\"";
+		col = String.format(col, usern);
+		String query = "SELECT ui.Age, ui.username, ui.Instagram, ui.UserDescription, ui.SexualOrientation, ui.Gender, upl.PreferenceList, udr.Extroverted,"
+				+ " udr.Humor, udr.Adventurous, udr.Ambitious, udr.Artistic, udr.WordsOfAffirmation, udr.PhysicalTouch,"
+				+ " udr.ReceivingGifts, udr.QualityTime, udr.ActsOfService, m.matchname, usr.Extroverted as SE, usr.Humor as SH, "
+				+ "usr.Adventurous as SA, usr.Ambitious as SAM, usr.Artistic as SAR, usr.WordsOfAffirmation as SW,"
+				+ " usr.PhysicalTouch as SP, usr.ReceivingGifts as SR, usr.QualityTime as SQ, usr.ActsOfService as SAC "
+				+ "FROM UserInfo ui, UserPreferenceList upl, UserDesiresRanking udr, UserSelfRanking usr, Matches m "
+				+ "WHERE ui.username = upl.username AND ui.username = udr.username AND ui.username = usr.username AND ui.username = m.username AND " + col;
+		ResultSet rs = getQuery(query);
+		
+		CreateProfileJson prof = new CreateProfileJson();
+		try
+		{
+			while (rs.next())
+			{
+			String g = rs.getString("Gender");
+			if (g.equals("M")){
+				prof.gender = 1;
+			}
+			else if (g.equals("F")){
+				prof.gender = 2;
+			}
+			else{
+				prof.gender = 3;
+			}
+			g = rs.getString("SexualOrientation");
+			if (g.equals("M")){
+				prof.SexOrient = 1;
+			}
+			else if (g.equals("F")){
+				prof.SexOrient = 2;
+			}
+			else{
+				prof.SexOrient = 3;
+			}
+			prof.age = rs.getInt("Age");
+			prof.description = rs.getString("UserDescription");
+			prof.insta = rs.getString("Instagram");
+			prof.first = rs.getString("matchname");
+			prof.UserName = rs.getString("username");
+			prof.selfRank.extroverted = rs.getInt("SE");
+			prof.selfRank.humor = rs.getInt("SH");
+			prof.selfRank.adventure = rs.getInt("SA");
+			prof.selfRank.ambition = rs.getInt("SAM");
+			prof.selfRank.artistic = rs.getInt("SAR");
+			prof.selfRank.wOfAff = rs.getInt("SW");
+			prof.selfRank.physTouch = rs.getInt("SP");
+			prof.selfRank.gifts = rs.getInt("SR");
+			prof.selfRank.qualTime = rs.getInt("SQ");
+			prof.selfRank.service = rs.getInt("SAC");
+			
+			prof.preferRank.extroverted = rs.getInt("Extroverted");
+			prof.preferRank.humor = rs.getInt("Humor");
+			prof.preferRank.adventure = rs.getInt("Adventurous");
+			prof.preferRank.ambition = rs.getInt("Ambitious");
+			prof.preferRank.artistic = rs.getInt("Artistic");
+			prof.preferRank.wOfAff = rs.getInt("WordsOfAffirmation");
+			prof.preferRank.physTouch = rs.getInt("PhysicalTouch");
+			prof.preferRank.gifts = rs.getInt("ReceivingGifts");
+			prof.preferRank.qualTime = rs.getInt("QualityTime");
+			prof.preferRank.service = rs.getInt("ActsOfService");
+		}
+		} catch (Exception e)
+		{
+			System.out.println("SOMETHING WAS CAUGHT");
+			prof.ServerMessage = "There was an error";
+			prof.statusCode = 404;
+			return prof;
+		}
+		col = "username = \"%s\"";
+		col = String.format(col, prof.UserName);
+		System.out.println(prof.UserName);
+		query = "SELECT FirstName, LastName FROM UserLogin WHERE " + col;
+		ResultSet rs2 = getQuery(query);
+		try
+		{
+			while(rs2.next()){
+
+			
+			prof.first = rs2.getString("FirstName");
+			prof.last = rs2.getString("LastName");
+			}
+		} catch (Exception e)
+		{
+			System.out.println("There was an exception which is not likely");
+		}
+		
+		
+		prof.ServerMessage = "Got proifle";
+		prof.statusCode = 200;
+		return prof;
+		
+	}
+	
+
+		// Sid's adaptation of Aayushi's amazing function above
+	public CreateProfileJson getProfileStringNoMatches(String usern)
 	{
 		// Builds the SQL statement before it is queried
 		// Then, the percent signs are filled with the parameters
@@ -822,6 +926,12 @@ public class DataStore
 			prof.selfRank.gifts = rs.getInt("SR");
 			prof.selfRank.qualTime = rs.getInt("SQ");
 			prof.selfRank.service = rs.getInt("SAC");
+			
+			
+			String str[] = rs.getString("PreferenceList").split(",");
+			prof.prefered = new Preferences();
+			prof.prefered.people = new ArrayList<String>(Arrays.asList(str));
+			
 			
 			prof.preferRank.extroverted = rs.getInt("Extroverted");
 			prof.preferRank.humor = rs.getInt("Humor");
