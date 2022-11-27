@@ -47,114 +47,117 @@ public class DataStore
 		
 		ds.noexceptQuery("USE UserDatabase;");
 		
+		CreateProfileJson CPJ = ds.getProfileString("testuser4");
+		System.out.println(CPJ.age);
+		
 		////////////////////////////
 		// TESTS getProfile function
 		// Working!
-		Profiles test = new Profiles();
-		test.FirstName = "Sid";
-		
-		CreateProfileJson PW = ds.getProfileString(test.UserName);
-		System.out.println("HERE");
-//		for(Profiles x : PW.profiles)
-//		{
-//			System.out.println(x.FirstName + x.LastName + x.UserName);
-//		}
-		
-		/////////////////////////////
-		
-		
-		
-		
-		
+//		Profiles test = new Profiles();
+//		test.FirstName = "Sid";
+//		
+//		CreateProfileJson PW = ds.getProfileString(test.UserName);
+//		System.out.println("HERE");
+////		for(Profiles x : PW.profiles)
+////		{
+////			System.out.println(x.FirstName + x.LastName + x.UserName);
+////		}
+//		
+//		/////////////////////////////
+//		
+//		
+//		
+//		
+//		
 		/////////////////////
 		// CreateProfile Test
 		// Status? In progress
 		// So far it works
-		System.out.println("\n\nCreating new profile test:\n");
-		CreateProfileJson CPJ = new CreateProfileJson(34);
-		ds.createProfile(CPJ);
-		System.out.println(CPJ.ServerMessage);
-		System.out.println(CPJ.statusCode);
-		
-		String query = "SELECT FirstName FROM UserLogin WHERE username=\"" + CPJ.UserName + "\";";
-		ResultSet test2 = ds.getQuery(query);
-		
-		try {
-			test2.next();
-			System.out.println(test2.getString("FirstName"));
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		////////////////////
-		
-		////////////////////
-		// CREATING A PROFILE WHICH ALREADY EXISTS TEST
-		// IT FUCKING WORKS!!!!!!!!!!!!!!!!!!!!!!!!
-		//
-		System.out.println("\n\nCREATING SAME PROFILE TEST:\n");
-		CPJ = new CreateProfileJson(34);
-		ds.createProfile(CPJ);
-		System.out.println(CPJ.ServerMessage);
-		System.out.println(CPJ.statusCode);
-		
-		
-		////////////////////
-		// TESTING if ALLPROFILES WORKS!!
-		// Tested and it works
-		//
-		ArrayList<Profiles> testP = ds.allProfiles();
-		for(Profiles profs : testP)
-		{
-			System.out.println(profs.FirstName);
-		}
-		
-		
-		//////////////////////
-		// TESTING IF AUTHORIZATION WORKS
-		// -- not yet tested
-		JsonFormats returned = ds.authorize(CPJ);
-		System.out.println("\n\nTESTING AUTHORIZATION");
-		System.out.println(returned.ServerMessage);
-		System.out.println(returned.statusCode);
-		
-		
-		
-		/////////////////////
-		// get profile test
-		//
-		System.out.println("\n\nn\n\n");
-		Profiles prof5 = new Profiles();
-		prof5.UserName = "sid_bansal";
-		CreateProfileJson CPJ5 = ds.getProfileString(prof5.UserName);
-		System.out.println(CPJ5.age);
-		System.out.println("\n\nn\n\n");
-
-		
-		
-		//////////////////////
-		// Check username existence 
-		
-		System.out.println(ds.profileExists("sid_bansal"));
-		System.out.println("\n\n\n\n\n");
-		
-		
-		
-		////////////////////
-		// TESTING IF MATCH PAIRS WORKS
-		// Supposedly works
-		ds.matchPairs();
-		String query1 = "SELECT username, matchname FROM Matches";
-		ResultSet test3 = ds.getQuery(query1);
-		try {
-			while (test3.next()){
-				System.out.println(test3.getString("username") + test3.getString("matchname"));
-			}
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		System.out.println(ds.getMatch("sanjana123"));
+//		System.out.println("\n\nCreating new profile test:\n");
+//		CreateProfileJson CPJ99 = new CreateProfileJson(34);
+//		ds.createProfile(CPJ99);
+//		System.out.println(CPJ99.ServerMessage);
+//		System.out.println(CPJ99.statusCode);
+//		
+//		String query = "SELECT FirstName FROM UserLogin WHERE username=\"" + CPJ.UserName + "\";";
+//		ResultSet test2 = ds.getQuery(query);
+//		
+//		try {
+//			test2.next();
+//			System.out.println(test2.getString("FirstName"));
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//		////////////////////
+//		
+//		////////////////////
+//		// CREATING A PROFILE WHICH ALREADY EXISTS TEST
+//		// IT FUCKING WORKS!!!!!!!!!!!!!!!!!!!!!!!!
+//		//
+//		System.out.println("\n\nCREATING SAME PROFILE TEST:\n");
+//		CPJ = new CreateProfileJson(34);
+//		ds.createProfile(CPJ);
+//		System.out.println(CPJ.ServerMessage);
+//		System.out.println(CPJ.statusCode);
+//		
+//		
+//		////////////////////
+//		// TESTING if ALLPROFILES WORKS!!
+//		// Tested and it works
+//		//
+//		ArrayList<Profiles> testP = ds.allProfiles();
+//		for(Profiles profs : testP)
+//		{
+//			System.out.println(profs.FirstName);
+//		}
+//		
+//		
+//		//////////////////////
+//		// TESTING IF AUTHORIZATION WORKS
+//		// -- not yet tested
+//		JsonFormats returned = ds.authorize(CPJ);
+//		System.out.println("\n\nTESTING AUTHORIZATION");
+//		System.out.println(returned.ServerMessage);
+//		System.out.println(returned.statusCode);
+//		
+//		
+//		
+//		/////////////////////
+//		// get profile test
+//		//
+//		System.out.println("\n\nn\n\n");
+//		Profiles prof5 = new Profiles();
+//		prof5.UserName = "sid_bansal";
+//		CreateProfileJson CPJ5 = ds.getProfileString(prof5.UserName);
+//		System.out.println(CPJ5.age);
+//		System.out.println("\n\nn\n\n");
+//
+//		
+//		
+//		//////////////////////
+//		// Check username existence 
+//		
+//		System.out.println(ds.profileExists("sid_bansal"));
+//		System.out.println("\n\n\n\n\n");
+//		
+//		
+//		
+//		////////////////////
+//		// TESTING IF MATCH PAIRS WORKS
+//		// Supposedly works
+//		ds.matchPairs();
+//		String query1 = "SELECT username, matchname FROM Matches";
+//		ResultSet test3 = ds.getQuery(query1);
+//		try {
+//			while (test3.next()){
+//				System.out.println(test3.getString("username") + test3.getString("matchname"));
+//			}
+//		} catch (SQLException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		System.out.println(ds.getMatch("sanjana123"));
 		
 	}
 	
@@ -529,6 +532,7 @@ public class DataStore
 			tables = "UserLogin";
 			String values = "VALUES(\"%s\",\"%s\",\"%s\",\"%s\")";
 			values = String.format(values, CPJ.first, CPJ.last, CPJ.UserName, CPJ.Password);
+			System.out.println(values);
 			query = "INSERT INTO " + tables + " " + values + ";";
 			LastQuery = query;
 			generalQuery(query);
@@ -546,6 +550,7 @@ public class DataStore
 			tables = "UserInfo";
 			values = "VALUES(\"%s\", \"%s\",\"%s\",%d, %d, %d, \"%s\",\"%s\")";
 			values = String.format(values, CPJ.UserName, CPJ.first, CPJ.last, CPJ.age, CPJ.SexOrient, CPJ.gender, CPJ.insta, CPJ.description);
+			System.out.println(values);
 			query = "INSERT INTO " + tables + " " + values + ";";
 			LastQuery = query;
 			generalQuery(query);
@@ -586,6 +591,7 @@ public class DataStore
 			values = String.format(values, CPJ.UserName, CSVPreferences);
 			query = "INSERT INTO " + tables + " " + values + ";";
 			LastQuery = query;
+			System.out.println(values);
 			generalQuery(query);
 			
 			// Should be inserted into UserPreferenceList
@@ -602,6 +608,7 @@ public class DataStore
 					CPJ.preferRank.ambition, CPJ.preferRank.artistic, CPJ.preferRank.wOfAff, CPJ.preferRank.physTouch, CPJ.preferRank.gifts,
 					CPJ.preferRank.qualTime, CPJ.preferRank.service);
 			query = "INSERT INTO " + tables + " " + values + ";";
+			System.out.println(values);
 			LastQuery = query;
 			generalQuery(query);
 
@@ -619,6 +626,7 @@ public class DataStore
 					CPJ.selfRank.ambition, CPJ.selfRank.artistic, CPJ.selfRank.wOfAff, CPJ.selfRank.physTouch, CPJ.selfRank.gifts,
 					CPJ.selfRank.qualTime, CPJ.selfRank.service);
 			query = "INSERT INTO " + tables + " " + values + ";";
+			System.out.println(values);
 			LastQuery = query;
 			generalQuery(query);
 			
@@ -759,15 +767,15 @@ public class DataStore
 		// Then, the percent signs are filled with the parameters
 		// by doing .format
 		
-		String col = "m.username = \"%s\"";
+		String col = "ui.username = \"%s\"";
 		col = String.format(col, usern);
-		String query = "SELECT ui.Age, ui.username, ui.Instagram, ui.UserDescription, ui.SexualOrientation, ui.Gender, upl.PreferenceList, udr.Extroverted,"
+		String query = "SELECT ui.Age, ui.username, ui.FirstName, ui.LastName, ui.Instagram, ui.UserDescription, ui.SexualOrientation, ui.Gender, upl.PreferenceList, udr.Extroverted,"
 				+ " udr.Humor, udr.Adventurous, udr.Ambitious, udr.Artistic, udr.WordsOfAffirmation, udr.PhysicalTouch,"
-				+ " udr.ReceivingGifts, udr.QualityTime, udr.ActsOfService, m.matchname, usr.Extroverted as SE, usr.Humor as SH, "
+				+ " udr.ReceivingGifts, udr.QualityTime, udr.ActsOfService, usr.Extroverted as SE, usr.Humor as SH, "
 				+ "usr.Adventurous as SA, usr.Ambitious as SAM, usr.Artistic as SAR, usr.WordsOfAffirmation as SW,"
 				+ " usr.PhysicalTouch as SP, usr.ReceivingGifts as SR, usr.QualityTime as SQ, usr.ActsOfService as SAC "
-				+ "FROM UserInfo ui, UserPreferenceList upl, UserDesiresRanking udr, UserSelfRanking usr, Matches m "
-				+ "WHERE ui.username = upl.username AND ui.username = udr.username AND ui.username = usr.username AND ui.username = m.username AND " + col;
+				+ "FROM UserInfo ui, UserPreferenceList upl, UserDesiresRanking udr, UserSelfRanking usr "
+				+ "WHERE ui.username = upl.username AND ui.username = udr.username AND ui.username = usr.username AND " + col;
 		ResultSet rs = getQuery(query);
 		if(rs == null) {
 			return null;
@@ -801,7 +809,8 @@ public class DataStore
 			prof.age = rs.getInt("Age");
 			prof.description = rs.getString("UserDescription");
 			prof.insta = rs.getString("Instagram");
-			prof.first = rs.getString("matchname");
+			prof.first = rs.getString("FirstName");
+			prof.last = rs.getString("LastName");
 			prof.UserName = rs.getString("username");
 			prof.selfRank.extroverted = rs.getInt("SE");
 			prof.selfRank.humor = rs.getInt("SH");
