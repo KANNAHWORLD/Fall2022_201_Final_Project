@@ -99,6 +99,20 @@ INSERT INTO UserSelfRanking
 VALUES ("sid_bansal", 5, 5, 5, 5, 5, 5, 5, 5, 5, 5),
 ("sanjana123", 5, 5, 5, 5, 5, 5, 5, 5, 5, 5);
 
+
+
+CREATE TABLE ImageMap
+(
+username VARCHAR(255),
+path VARCHAR(255)
+);
+
+
+# INSERT INTO ImageMap VALU
+
+
+
+
 #SELECT * FROM UserInfo;
 
 #SELECT * FROM UserPreferenceList;

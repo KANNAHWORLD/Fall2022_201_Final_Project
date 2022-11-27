@@ -1,18 +1,31 @@
 package restAPI.endPoints;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.google.api.client.json.Json;
+
+import ch.qos.logback.core.util.FileUtil;
 
 @RestController
 @CrossOrigin(origins="*")
 @RequestMapping(value="/user")
 public class User {
 	
-	DataStore DBInstance = new DataStore(234);
+	DataStore DBInstance = new DataStore();
 	
 	
 	//
@@ -111,7 +124,36 @@ public class User {
 	}
 	
 
+	// TODO: need to find a way to make a directory, and read the files to test it out
+	// the request can be made by 
+	// for example 
+	// curl -F files=@pom.xml localhost:8082/user/upload -F username="hello"
+	// -F must be mentioned before any parameter for the reason of multipartness or whatever
+
 	
+	@PostMapping("/upload")
+    public void uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("username") String username) {
+        try {
+            
+            byte[] filebytes = files[0].getBytes();
+            
+            File newFile = new File("images/"+ username + ".png");
+            
+            OutputStream os = new FileOutputStream(newFile);
+           
+            os.write(filebytes);
+            
+            os.close();
+            
+
+        	} catch (Exception e)
+	        {
+        		e.printStackTrace();
+        		System.out.println("HEHEHEH");
+	        }
+	}
+	
+
 	
 	// FOR SANNJAN DROP DOWN BAR!!!!!!!!!!!!!
 	//
