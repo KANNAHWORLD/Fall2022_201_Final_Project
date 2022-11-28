@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import $ from 'jquery';
 import icon from './user-plus-icon.png';
 // import formButton from '../images/form-button.png';
@@ -8,8 +8,45 @@ import './App.css';
 import { useNavigate } from "react-router-dom";
 
 function App() {
+  const [files, setFiles] = useState('');
+  //state for checking file size
+  const [fileSize, setFileSize] = useState(true);
+  // for file upload progress message
+  const [fileUploadProgress, setFileUploadProgress] = useState(false);
+  //for displaying response message
+  const [fileUploadResponse, setFileUploadResponse] = useState(null);
+  const FILE_UPLOAD_BASE_ENDPOINT = "34.130.1.66:8082/user/upload";//34.130.1.66:8082/user/upload
+
+  let formData = null;
+  
+  const requestOptions = {
+    method: 'POST',
+    body: formData
+  };
+
+
   let navigate = useNavigate(); 
+  
   const routeChange = () =>{ 
+    fetch(FILE_UPLOAD_BASE_ENDPOINT, requestOptions)
+            .then(async response => {
+                const isJson = response.headers.get('content-type')?.includes('application/json');
+                const data = isJson && await response.json();
+
+                // check for error response
+                if (!response.ok) {
+                    // get error message
+                    const error = (data && data.message) || response.status;
+                    setFileUploadResponse(data.message);
+                    return Promise.reject(error);
+                }
+
+               console.log(data.message);
+               setFileUploadResponse(data.message);
+            })
+            .catch(error => {
+                console.error('Error while uploading file!', error);
+            });
 
     var fName = document.querySelector('input[name="first name"]').value;
     var lName = document.querySelector('input[name="last name"]').value;
@@ -41,6 +78,7 @@ function App() {
     function fasterPreview( uploader ) {
       if ( uploader.files && uploader.files[0] ){
         // console.log("st")
+            formData = uploader.files[0];
             $('.profile-pic').attr('src', 
                window.URL.createObjectURL(uploader.files[0]) );
             $('.profile-pic').css("width","300px");
