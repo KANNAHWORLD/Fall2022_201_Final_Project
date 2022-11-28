@@ -56,6 +56,10 @@ export const Login=(props)=>{
               })
               .then((response) => {
                 console.log(response);
+                setFormError({
+                    ...inputError,
+                    password: "it worked",
+                  });
                 //SEND RESPONSE TO NEXT PERSON
                 //navigate("/profile",{user:{userName:email,password:password}});
               }, (error) => {

@@ -79,6 +79,7 @@ export const Register=(props)=>{
             })
             .then((response) => {
               var code = response.data['statusCode'];
+              alert(code);
               if(code === '404'){
                 setFormError({
                   ...inputError,
@@ -87,6 +88,10 @@ export const Register=(props)=>{
               }
               else{
                 alert("it worked");
+                setFormError({
+                  ...inputError,
+                  cpassword: "It worked",
+                });
                 //redirect to angela's page and send username and password info
                 //navigate("/profile",{user:{userName:email,password:password}});
               }
@@ -94,7 +99,6 @@ export const Register=(props)=>{
               //DO NOTHING???
               alert("Error");
               console.log(error);
-              
             });
         }
       
