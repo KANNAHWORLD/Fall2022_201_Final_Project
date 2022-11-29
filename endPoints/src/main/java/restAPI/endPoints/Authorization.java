@@ -2,6 +2,7 @@ package restAPI.endPoints;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -45,11 +46,11 @@ public class Authorization {
 	
 	
 	// Checks if a profile already exists
-	@RequestMapping(value="/CPE", method = RequestMethod.GET)
+	@RequestMapping(value="/CPE/{usern}", method = RequestMethod.GET)
 	@ResponseBody
-	public JsonFormats check(@RequestBody String user)
+	public JsonFormats check(@PathVariable("usern") String usern)
 	{
-		boolean ret = DBInstance.profileExists(user);
+		boolean ret = DBInstance.profileExists(usern);
 		if(ret)
 		{
 			return new JsonFormats(200, "Username is not taken");
