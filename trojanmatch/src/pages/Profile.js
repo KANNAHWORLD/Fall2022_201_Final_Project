@@ -8,16 +8,16 @@ import './Profile.css';
 import { useNavigate } from "react-router-dom";
 
 function Profile() {
-  const [files, setFiles] = useState('');
-  //state for checking file size
-  const [fileSize, setFileSize] = useState(true);
-  // for file upload progress message
-  const [fileUploadProgress, setFileUploadProgress] = useState(false);
+  // const [files, setFiles] = useState('');
+  // //state for checking file size
+  // const [fileSize, setFileSize] = useState(true);
+  // // for file upload progress message
+  // const [fileUploadProgress, setFileUploadProgress] = useState(false);
   //for displaying response message
   const [fileUploadResponse, setFileUploadResponse] = useState(null);
-  const FILE_UPLOAD_BASE_ENDPOINT = "34.130.1.66:8082/user/upload";
+  const FILE_UPLOAD_BASE_ENDPOINT = "http://34.130.1.66:8082/user/upload/test";
 
-  let formData = null;
+  let formData = new FormData();
   
   const requestOptions = {
     method: 'POST',
@@ -78,10 +78,12 @@ function Profile() {
     function fasterPreview( uploader ) {
       if ( uploader.files && uploader.files[0] ){
         // console.log("st")
-        formData = uploader.files[0];
-            $('.profile-pic').attr('src', 
-               window.URL.createObjectURL(uploader.files[0]) );
-            $('.profile-pic').css("width","300px");
+        //formData = uploader.files[0];//save image somehow
+        formData.append('files', uploader.files[0]);
+
+        $('.profile-pic').attr('src', 
+            window.URL.createObjectURL(uploader.files[0]) );
+        $('.profile-pic').css("width","300px");
       }
   }
 
@@ -185,7 +187,7 @@ function Profile() {
           <ul>
             <p>Very Introverted</p>
             <label for="extrovert" className = "radio-style">1<br />
-              <input type="radio" id="one-one" name="one" value="1" checked/>
+              <input type="radio" id="one-one" name="one" value="1" defaultChecked/>
             </label>
             <label for="extrovert" className = "radio-style">2<br />
               <input type="radio" id="one-two" name="one" value="2" />
@@ -212,7 +214,7 @@ function Profile() {
           <ul>
             <p>Doesn't Matter</p>
             <label for="humor" className = "radio-style">1<br />
-              <input type="radio" id="two-one" name="two" value="1" checked/>
+              <input type="radio" id="two-one" name="two" value="1" defaultChecked/>
             </label>
             <label for="humor" className = "radio-style">2<br />
               <input type="radio" id="two-two" name="two" value="2" />
@@ -239,7 +241,7 @@ function Profile() {
           <ul>
             <p>Home Body</p>
             <label for="adventure" className = "radio-style">1<br />
-              <input type="radio" id="three-one" name="three" value="1" checked/>
+              <input type="radio" id="three-one" name="three" value="1" defaultChecked/>
             </label>
             <label for="adventure" className = "radio-style">2<br />
               <input type="radio" id="three-two" name="three" value="2" />
@@ -266,7 +268,7 @@ function Profile() {
           <ul>
             <p>Doesn't Matter</p>
             <label for="ambition" className = "radio-style">1<br />
-              <input type="radio" id="four-one" name="four" value="1" checked/>
+              <input type="radio" id="four-one" name="four" value="1" defaultChecked/>
             </label>
             <label for="ambition" className = "radio-style">2<br />
               <input type="radio" id="four-two" name="four" value="2" />
@@ -293,7 +295,7 @@ function Profile() {
           <ul>
             <p>Doesn't Matter</p>
             <label for="art" className = "radio-style">1<br />
-              <input type="radio" id="five-one" name="five" value="1" checked/>
+              <input type="radio" id="five-one" name="five" value="1" defaultChecked/>
             </label>
             <label for="art" className = "radio-style">2<br />
               <input type="radio" id="five-two" name="five" value="2" />
@@ -320,7 +322,7 @@ function Profile() {
           <ul className = "App-affirmations">
             <p className = "App-language">Words of Affirmation</p>
             <label for="affirmation" className = "radio-style">1<br />
-              <input type="radio" id="six-one" name="six" value="1" checked/>
+              <input type="radio" id="six-one" name="six" value="1" defaultChecked/>
             </label>
             <label for="affirmation" className = "radio-style">2<br />
               <input type="radio" id="six-two" name="six" value="2" />
@@ -339,7 +341,7 @@ function Profile() {
           <ul className = "App-touch">
             <p className = "App-language">Physical Touch</p>
             <label for="touch" className = "radio-style">1<br />
-              <input type="radio" id="seven-one" name="seven" value="1" checked/>
+              <input type="radio" id="seven-one" name="seven" value="1" defaultChecked/>
             </label>
             <label for="touch" className = "radio-style">2<br />
               <input type="radio" id="seven-two" name="seven" value="2" />
@@ -358,7 +360,7 @@ function Profile() {
           <ul className = "App-gifts">
             <p className = "App-language">Receiving Gifts</p>
             <label for="gift" className = "radio-style">1<br />
-              <input type="radio" id="eight-one" name="eight" value="1" checked/>
+              <input type="radio" id="eight-one" name="eight" value="1" defaultChecked/>
             </label>
             <label for="gift" className = "radio-style">2<br />
               <input type="radio" id="eight-two" name="eight" value="2" />
@@ -377,7 +379,7 @@ function Profile() {
           <ul className = "App-quality">
             <p className = "App-language">Quality Time</p>
             <label for="time" className = "radio-style">1<br />
-              <input type="radio" id="nine-one" name="nine" value="1" checked/>
+              <input type="radio" id="nine-one" name="nine" value="1" defaultChecked/>
             </label>
             <label for="time" className = "radio-style">2<br />
               <input type="radio" id="nine-two" name="nine" value="2" />
@@ -396,7 +398,7 @@ function Profile() {
           <ul className = "App-service">
             <p className = "App-language">Acts of Service</p>
             <label for="service" className = "radio-style">1<br />
-              <input type="radio" id="ten-one" name="ten" value="1" checked/>
+              <input type="radio" id="ten-one" name="ten" value="1" defaultChecked/>
             </label>
             <label for="service" className = "radio-style">2<br />
               <input type="radio" id="ten-two" name="ten" value="2" />
