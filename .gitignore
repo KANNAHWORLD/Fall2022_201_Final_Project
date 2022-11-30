@@ -4,4 +4,6 @@
 Servers/**
 /Servers/**
 
+**/.DS_Store
+
 /endPoints/.metadata/**

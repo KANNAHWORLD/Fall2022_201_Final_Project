@@ -1,5 +1,6 @@
 import logo from './logo.svg';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import plus from './pink-plus-sign.jpeg';
 import Select from 'react-dropdown-select';
 import "@fontsource/comfortaa";
@@ -25,9 +26,50 @@ function App() {
   const [people, setPeople] = useState([]);
   const [rating, setRating] = useState([]);
 
-  const personOptions = [
-    {label: "Harry", value: 0},
-    {label: "Sally", value: 1}];
+  const [personOptions, setPersonOptions] = useState([]);
+
+  //CONNECTING DROPDOWN TO BACKEND
+  const [post, setPost] = useState();
+  
+
+  useEffect(() => {
+    axios.get("http://34.130.1.66:8082/user/allprofiles").then((response) => {
+     //alert(response.status);
+     //alert(response.data);
+     let p = [];
+     setPost(post => response.data);
+     p = response.data;
+     //alert(p.length);
+     //alert(post);
+    
+    //  for (let i = 0; i < post.length; i++) {
+    //    personOptions.push({
+    //      label: post[i].FirstName + " " + post[i].LastName + " (@" + post[i].UserName + ")",
+    //      value: i
+    //    });
+    //   }
+    // let empty = [];
+    // setPersonOptions(empty);
+    //setPersonOptions([]);
+    //setPersonOptions([]);
+    //alert(personOptions.length);
+    if (personOptions.length === 0) {
+      for (let i = 0; i < p.length; i++) {
+        //alert(p[i].FirstName);
+        personOptions.push({
+          label: p[i].FirstName + " " + p[i].LastName + " (@" + p[i].UserName + ")",
+          value: i
+        });
+        //setPersonOptions([...personOptions, {label: p[i].FirstName, value: i}]);
+       }
+    }
+    
+     //alert(personOptions.length);
+    }).catch(error => alert(error));
+  
+ },[]);
+  
+
   const ratingOptions = [
     {label: 1, value: 0},
     {label: 2, value: 1},
@@ -58,43 +100,90 @@ function App() {
   }
 
   const submitted = (event) => {
-    //alert("SUCCESSFULLY SUBMITTED WITH: " + "extroverted scale is " + extrovertedScale + " humor scale is " + humorScale + " adventure scale is now " + adventureScale + " ambitious scale is " + ambitiousScale + " artistic scale is " + artisticScale + " affirmation rank is " + affirmationRank + " touch rank is " + touchRank + " gifts rank is " + giftsRank + " quality rank is " + qualityRank + " service rank is " + serviceRank + "");
-    //alert("CLICKED");
-    // clicked(e);
-    let str = "";
+    let p = [];
     for (let i = 0; i < people.length; i++) {
-      str += "person " + people[i].name + " with rating " + rating[i].rating + "\n";
+      let str = people[i].name;
+      let index1 = str.length-1;
+      while (str.charAt(index1) != '(') {
+        index1--;
+      }
+      let text = str.substring(index1+2, str.length-1);
+
+      p.push(text);
+      p.push((rating[i].rating).toString());
     }
-    alert(str);
+
+    let str = "";
+    for (let i = 0; i < p.length; i++) {
+      str += p[i] + " ";
+    }
+
+    const result = axios.post(
+      'http://34.130.1.66:8082/user/createProfile',
+      {
+        'first': 'Ronald',
+        'last': 'Weasley',
+        'age': 4,
+        'SexOrient': 3,
+        'gender': 5,
+        'insta': 'insta',
+        'description': 'AAA',
+        'UserName': 'ronron',
+        'Password': 'hello',
+        'prefered': {
+            'people': p
+        },
+        'selfRank': {
+            'extroverted': 3,
+            'humor': 4,
+            'adventure': 3,
+            'ambition': 9,
+            'artistic': 4,
+            'wOfAff': 3,
+            'physTouch': 3,
+            'gifts': 23,
+            'qualTime': 3,
+            'service': 8
+        },
+        'preferRank': {
+            'extroverted': extrovertedScale,
+            'humor': humorScale,
+            'adventure': adventureScale,
+            'ambition': ambitiousScale,
+            'artistic': artisticScale,
+            'wOfAff': affirmationRank,
+            'physTouch': touchRank,
+            'gifts': giftsRank,
+            'qualTime': qualityRank,
+            'service': serviceRank
+        }
+    },
+      {
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8',
+          'Access-Control-Allow-Origin' : '*',
+          'Access-Control-Allow-Methods':'GET,PUT,POST,DELETE,PATCH,OPTIONS',
+        }
+      }
+    ).then((response) => {/*alert(response.status)*/}).catch(error => (alert(error)));
+
   }
 
-  // function clicked(e) {
-  //   e.target.setAttribute('src', {formButtonSelected});
-  //   e.target.setAttribute('alt', 'logo');
-  // }
-
-  // myfunction = ( () => {
-  //     console.log("CLICKED");
-  //   }
-  // )
-  
   return (
 
     <div className="App">
+        
+       
         <p>
           HEADER HERE
         </p>
+
+         
+
         <h2>
           What do you look for in a partner?
         </h2>
-        {/* <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a> */}
+        
 
         <div className = "App-sq"
         style = {
