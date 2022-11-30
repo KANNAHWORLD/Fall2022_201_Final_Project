@@ -117,6 +117,7 @@ public class User {
 	// Will return the person's rankings of himself, his name, age, sexual orientation
 	// instagram handle, and description
 	@RequestMapping(value="/getProfile", method = RequestMethod.POST)
+	@ResponseBody
 	public JsonFormats getProfile(@RequestBody Profiles singleProfile)
 	// gets a single profile, not multiple Profiles
 	// Needs a username, otherwise it does not work
