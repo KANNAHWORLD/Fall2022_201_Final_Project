@@ -184,7 +184,7 @@ function Profile() {
             How extroverted are you?
           </h4>
 
-          <ul>
+          <ul className='ulp'>
             <p>Very Introverted</p>
             <label for="extrovert" className = "radio-style">1<br />
               <input type="radio" id="one-one" name="one" value="1" defaultChecked/>
@@ -211,7 +211,7 @@ function Profile() {
             How humorous are you?
           </h4>
 
-          <ul>
+          <ul className='ulp'>
             <p>Doesn't Matter</p>
             <label for="humor" className = "radio-style">1<br />
               <input type="radio" id="two-one" name="two" value="1" defaultChecked/>
@@ -238,7 +238,7 @@ function Profile() {
             How important is being adventurous to you?
           </h4>
 
-          <ul>
+          <ul className='ulp'>
             <p>Home Body</p>
             <label for="adventure" className = "radio-style">1<br />
               <input type="radio" id="three-one" name="three" value="1" defaultChecked/>
@@ -265,7 +265,7 @@ function Profile() {
             How ambitious are you?
           </h4>
 
-          <ul>
+          <ul className='ulp'> 
             <p>Doesn't Matter</p>
             <label for="ambition" className = "radio-style">1<br />
               <input type="radio" id="four-one" name="four" value="1" defaultChecked/>
@@ -292,7 +292,7 @@ function Profile() {
             How artistic does your partner need to be?
           </h4>
 
-          <ul>
+          <ul className='ulp'>
             <p>Doesn't Matter</p>
             <label for="art" className = "radio-style">1<br />
               <input type="radio" id="five-one" name="five" value="1" defaultChecked/>

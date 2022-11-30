@@ -5,13 +5,36 @@ import '@fontsource/pacifico';
 import { Link } from 'react-router-dom';
 import http from "./Common.js"
 import axios from 'axios';
+
+
 function Match(){
   React.useEffect(() => {
     http.get("/matches/sanjana123").then(res => {
       setData(res.data);
-    });
+    }).then(res => {
+      if (data.length === 0){
+        
+      }
+      else{
+        fetchImage('http://34.130.1.66:8082/user/getImg/sanjana');
+        
+        
+        
+      }
+    }
+      
+    );
+
+
+
 
   }, []);
+
+  const getFile = async (nombreArchivo) => { 
+    const tokenApp = window.localStorage.getItem('token')
+    const {data: res} = await axios.get(`http://34.130.1.66:8082/user/getImg/sanjana`,
+    {  headers: { Authorization: `${tokenApp}` },responseType: 'blob',});
+    return res;};
     const [button, setButton] = useState("REJECT MATCH <3");
     const changeButton = () => {
       if (button === "ACCEPT MATCH <3"){
@@ -21,6 +44,19 @@ function Match(){
           setButton("ACCEPT MATCH <3");
         }
     }
+    const [imageprof, setImageProf] = useState(null);
+    const fetchImage = async (url) => {
+      try {
+        const response = await fetch(url);
+        const imageBytes = await response.arrayBuffer();
+        var blob = new Blob([imageBytes], { type: "image/jpeg" });
+        var imageUrl = URL.createObjectURL(blob);
+        setImageProf(imageUrl);
+      } catch (error) {
+        console.log("ERROR:", error);
+      }
+    };
+    
     const [data, setData] = useState([logo, "Melinda", "Smith", "23", "Heterosexual", "@MelindaSmith", "Hello! \nMy name is Melinda and I am looking for love <3"]);
     const type = ["Image", "First Name", "Last Name", "Age", "Interested in", "Social Media", "Description"];
     if (data.length === 0){
@@ -33,53 +69,53 @@ function Match(){
           <h1 class='header1'>
             {button === "ACCEPT MATCH <3" ? 'You have rejected your match' : 'Your Daily Match'}
               </h1>
-          <img class='logomatch' src={logo}/>
+          <img class='logomatch' src={imageprof}/>
           <div class= 'block1'>
-            <p class='Title'>
+            <p class='Title1'>
               {type[1]}
             </p>
-            <p class='input'>
+            <p class='input1'>
               {data.first}
             </p>
           </div>
           <div class= 'block1'>
-            <p class='Title'>
+            <p class='Title1'>
               {type[2]}
             </p>
-            <p class='input'>
+            <p class='input1'>
               {data.last}
             </p>
           </div>
           <div class= 'block1'>
-            <p class='Title'>
+            <p class='Title1'>
               {type[3]}
             </p>
-            <p class='input'>
+            <p class='input1'>
               {data.age}
             </p>
           </div>
           <div class= 'block1'>
-            <p class='Title'>
+            <p class='Title1'>
               {type[4]}
             </p>
-            <p class='input'>
+            <p class='input1'>
               {data.SexOrient === 1 ? "Male" : ( data.SexOrient === 2 ? "Female" : "Anyone")}
             </p>
           </div>
           <div class= 'block1'>
-            <p class='Title'>
+            <p class='Title1'>
               {type[5]}
             </p>
-            <p class='input'>
+            <p class='input1'>
               {data.insta}
             </p>
           </div>
           
           <div class= 'block1'>
-            <p class='Title'>
+            <p class='Title1'>
               {type[6]}
             </p>
-            <p class='input'>
+            <p class='input1'>
               {data.description}
             </p>
           </div>
@@ -87,7 +123,7 @@ function Match(){
             changeButton(); 
             axios({
               method: 'post',
-              url: 'http://localhost:8082/user/changeMatch',
+              url: 'http://http://34.130.1.66:8082/user/changeMatch',
               data: {
                 user: "sanjana123",
                 match: data.UserName

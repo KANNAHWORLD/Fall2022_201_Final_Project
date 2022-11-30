@@ -1,0 +1,87 @@
+
+@font-face { font-family: Comfortaa; font-weight: normal; src: url('https://fonts.googleapis.com/css?family=Comfortaa') }
+
+.App {
+  text-align: center;
+  display:flex;
+  min-height:100vh;
+  align-items: center;
+  justify-content:center;
+  background-color: white;
+  font-family: 'Comfortaa';
+}
+
+.auth-form-container{
+  font-family: 'Comfortaa';
+  display: flex;
+  flex-direction:column;
+  text-align: center;
+  margin-top: 175px;
+  align-items: center;
+}
+
+.login-form{
+  font-family: 'Comfortaa';
+  display: flex;
+  flex-direction:column;
+  text-align: center;
+  width: 800px;
+}
+
+.register-form{
+  font-family: 'Comfortaa';
+  display: flex;
+  flex-direction:column;
+  text-align: center;
+  width: 800px;
+}
+
+/*
+.auth-form-container{
+  padding:5rem;
+  border:1px solid #707070;
+  border-radius: 10px;
+}
+*/
+
+.label2{
+  text-align: left;
+  font-family: 'Comfortaa';
+  padding:0.25rem 0;
+}
+
+.Form-Input{
+  font-family: 'Comfortaa';
+  margin: 0.25rem 0;
+  padding: 0.5rem 0;
+  border-color: #707070;
+  border-radius:10px;
+  padding-left: 10px;
+}
+
+.button2{
+  font-family: 'Comfortaa';
+  border:none;
+  margin: 0.5rem 0;
+  color: white;
+  background-color: #CD5C5C;
+  padding: 10px;
+  border-radius:10px;
+  cursor: pointer;
+}
+
+.link-btn{
+  font-family: 'Comfortaa';
+  margin: 0.5rem;
+  background: none;
+  color:#707070;
+  text-decoration: underline;
+}
+
+.error-message{
+  font-family: 'Comfortaa';
+  padding: 0.1rem 0;
+  margin: .2rem 0;
+  color: #CD5C5C;
+  text-align: left;
+}
