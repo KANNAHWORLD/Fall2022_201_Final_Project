@@ -105,7 +105,7 @@ public class User {
 	{
 		String toret = DBInstance.getMatch(usern);
 		if (toret.equals("-5")){
-			return null;
+			return new CreateProfileJson(77);
 		}
 		return DBInstance.getProfileString(toret);
 	}
