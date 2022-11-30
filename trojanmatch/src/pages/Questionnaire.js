@@ -10,7 +10,11 @@ import transparentOption from '../images/transparentoption.png';
 import './Questionnaire.css';
 import { getValue } from '@testing-library/user-event/dist/utils';
 
+import { createSearchParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
+
 function App() {
+  let navigate = useNavigate(); 
+  const {state} = useLocation();
 
   const [extrovertedScale, setExtrovertedScale] = useState(0);
   const [humorScale, setHumorScale] = useState(0);
@@ -117,33 +121,33 @@ function App() {
     for (let i = 0; i < p.length; i++) {
       str += p[i] + " ";
     }
-
+    
     const result = axios.post(
       'http://34.130.1.66:8082/user/createProfile',
       {
-        'first': 'Ronald',
-        'last': 'Weasley',
-        'age': 4,
-        'SexOrient': 3,
-        'gender': 5,
-        'insta': 'insta',
-        'description': 'AAA',
-        'UserName': 'ronron',
-        'Password': 'hello',
+        'first': state.first,
+        'last': state.last,
+        'age': parseInt(state.age),
+        'SexOrient': parseInt(state.sexuality),
+        'gender': parseInt(state.gender),
+        'insta': state.media,
+        'description': state.descrip,
+        'UserName': state.username,
+        'Password': state.password,
         'prefered': {
             'people': p
         },
         'selfRank': {
-            'extroverted': 3,
-            'humor': 4,
-            'adventure': 3,
-            'ambition': 9,
-            'artistic': 4,
-            'wOfAff': 3,
-            'physTouch': 3,
-            'gifts': 23,
-            'qualTime': 3,
-            'service': 8
+            'extroverted': parseInt(state.one),
+            'humor': parseInt(state.two),
+            'adventure': parseInt(state.three),
+            'ambition': parseInt(state.four),
+            'artistic': parseInt(state.five),
+            'wOfAff': parseInt(state.six),
+            'physTouch': parseInt(state.seven),
+            'gifts': parseInt(state.eight),
+            'qualTime': parseInt(state.nine),
+            'service': parseInt(state.ten)
         },
         'preferRank': {
             'extroverted': extrovertedScale,
@@ -167,6 +171,11 @@ function App() {
       }
     ).then((response) => {/*alert(response.status)*/}).catch(error => (alert(error)));
 
+    let path = `../match`; 
+    var username = state.username;
+    var password = state.password;
+
+    navigate(path, {state: {username: username, password: password}});
   }
 
   return (

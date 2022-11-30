@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import axios from 'axios';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, createSearchParams} from 'react-router-dom';
 import './LogIn.css'
 
 function LogIn(){
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
     const[email, setEmail]=useState('');
     const[password,setPassword]=useState('');
     const [formError, setFormError] = useState({
@@ -68,7 +68,8 @@ function LogIn(){
                         password: "it worked",
                     });
                     //SEND RESPONSE TO NEXT PERSON
-                    //navigate("/profile",{user:{userName:email,password:password}});
+                    let path = `../profile`; 
+                    navigate(path, {state: {username: email, password: password}});
 
                 }}).catch((error) => {
                 alert(error);

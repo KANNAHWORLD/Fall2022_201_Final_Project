@@ -1,10 +1,10 @@
 import React, {useState} from "react";
 import axios from 'axios';
-import {Link, useNavigate} from 'react-router-dom';
+import {Link, useNavigate, createSearchParams} from 'react-router-dom';
 //import './LogIn.css'
 
 function SignUp(){
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
     const[name, setName]=useState('');
     const[password,setPassword]=useState('');
     const[cpassword,setCPassword]=useState('');
@@ -94,7 +94,13 @@ function SignUp(){
                 cpassword: "It worked",
               });
               //redirect to angela's page and send username and password info
-              //navigate("/profile",{user:{userName:email,password:password}});
+              let path = `../profile`; 
+              //navigate(path);
+              // navigate({
+              //     path,
+              //     search: createSearchParams({username: name, password: password}).toString()});
+              navigate(path, {state: {username: name, password: password}});
+
             }
           }, (error) => {
             //DO NOTHING???

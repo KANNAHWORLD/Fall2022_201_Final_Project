@@ -5,9 +5,11 @@ import icon from '../images/user-plus-icon.png';
 // import formButtonSelected from '../images/form-button-selected.png';
 import './Profile.css';
 
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate, useSearchParams, useLocation } from "react-router-dom";
 
 function Profile() {
+  const {state} = useLocation();
+
   // const [files, setFiles] = useState('');
   // //state for checking file size
   // const [fileSize, setFileSize] = useState(true);
@@ -26,7 +28,7 @@ function Profile() {
 
 
   let navigate = useNavigate(); 
-  const routeChange = () =>{ 
+  const RouteChange = () =>{ 
 
     fetch(FILE_UPLOAD_BASE_ENDPOINT, requestOptions)
             .then(async response => {
@@ -67,10 +69,65 @@ function Profile() {
     var nine = document.querySelector('input[name="nine"]:checked').value;
     var ten = document.querySelector('input[name="ten"]:checked').value;
 
-    let full = [fName, lName, age, gender, sexuality, media, descrip, one, two, three, four, five, six, seven, eight, nine, ten];
 
+
+    //let full = [fName, lName, age, gender, sexuality, media, descrip, one, two, three, four, five, six, seven, eight, nine, ten];
+    // const [searchparams] = useSearchParams();
     let path = `../questionnaire`; 
-    navigate(path,{state:full});
+    var username = state.username;
+    var password = state.password;
+    // full.push(temp);
+    // temp = useSearchParams.get("password");
+    // full.push(temp);
+    //alert(username);
+    //console.log(state.username);
+
+    navigate(path,
+      {
+        state:{username: username,
+          password: password,
+          first: fName,
+          last: lName,
+          age: age,
+          gender: gender,
+          sexuality: sexuality,
+          media: media,
+          descrip: descrip,
+          one: one,
+          two: two,
+          three: three,
+          four: four,
+          five: five,
+          six: six,
+          seven: seven,
+          eight: eight,
+          nine: nine,
+          ten: ten
+          }
+      });
+
+    // navigate(
+    //   path,
+      // {search: createSearchParams({username: username,
+      // password: password,
+      // first: fName,
+      // last: lName,
+      // age: age,
+      // gender: gender,
+      // sexuality: sexuality,
+      // media: media,
+      // descrip: descrip,
+      // one: one,
+      // two: two,
+      // three: three,
+      // four: four,
+      // five: five,
+      // six: six,
+      // seven: seven,
+      // eight: eight,
+      // nine: nine,
+      // ten: ten
+      // }).toString()});
   }
 
   $(document).ready(function() {
@@ -140,9 +197,9 @@ function Profile() {
           Gender: 
           <select name="gender" className="Select" id="gender" required>
             <option value="none" selected disabled hidden>Select an Option</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="non-binary">Non-Binary</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Non-Binary</option>
           </select>
         </div>
 
@@ -150,10 +207,9 @@ function Profile() {
           Interested In: 
           <select name="sexuality" className="Select" id="sexuality" required>
             <option value="none" selected disabled hidden>Select an Option</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-            <option value="non-binary">Non-Binary</option>
-            <option value="non-binary">Anyone</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="3">Non-Binary</option>
           </select>
         </div>
 
@@ -416,7 +472,7 @@ function Profile() {
         </div>
       </body>
       </form>
-      <input type="submit" className="continue-button" value="Continue" onClick={routeChange}/>
+      <input type="submit" className="continue-button" value="Continue" onClick={RouteChange}/>
 
       <br/>
       <br/>
