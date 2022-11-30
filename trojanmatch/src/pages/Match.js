@@ -5,21 +5,20 @@ import '@fontsource/pacifico';
 import { Link } from 'react-router-dom';
 import http from "./Common.js"
 import axios from 'axios';
-
+import { useLocation } from "react-router-dom";
 
 function Match(){
+  const {state} = useLocation();
   React.useEffect(() => {
-    http.get("/matches/sanjana123").then(res => {
+    var user = state.username;
+    http.get("/matches/" + user).then(res => {
       setData(res.data);
     }).then(res => {
       if (data.length === 0){
         
       }
       else{
-        fetchImage('http://34.130.1.66:8082/user/getImg/sanjana');
-        
-        
-        
+        fetchImage('http://34.130.1.66:8082/user/getImg/' + data.UserName);
       }
     }
       
