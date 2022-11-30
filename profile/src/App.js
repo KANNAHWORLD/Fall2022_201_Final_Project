@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import $ from 'jquery';
-import icon from '../images/user-plus-icon.png';
+import icon from './user-plus-icon.png';
 // import formButton from '../images/form-button.png';
 // import formButtonSelected from '../images/form-button-selected.png';
-import './Profile.css';
+import './App.css';
 
 import { useNavigate } from "react-router-dom";
 
-function Profile() {
+function App() {
   const [files, setFiles] = useState('');
   //state for checking file size
   const [fileSize, setFileSize] = useState(true);
@@ -15,7 +15,7 @@ function Profile() {
   const [fileUploadProgress, setFileUploadProgress] = useState(false);
   //for displaying response message
   const [fileUploadResponse, setFileUploadResponse] = useState(null);
-  const FILE_UPLOAD_BASE_ENDPOINT = "34.130.1.66:8082/user/upload";
+  const FILE_UPLOAD_BASE_ENDPOINT = "34.130.1.66:8082/user/upload";//34.130.1.66:8082/user/upload
 
   let formData = null;
   
@@ -26,8 +26,8 @@ function Profile() {
 
 
   let navigate = useNavigate(); 
+  
   const routeChange = () =>{ 
-
     fetch(FILE_UPLOAD_BASE_ENDPOINT, requestOptions)
             .then(async response => {
                 const isJson = response.headers.get('content-type')?.includes('application/json');
@@ -78,7 +78,7 @@ function Profile() {
     function fasterPreview( uploader ) {
       if ( uploader.files && uploader.files[0] ){
         // console.log("st")
-        formData = uploader.files[0];
+            formData = uploader.files[0];
             $('.profile-pic').attr('src', 
                window.URL.createObjectURL(uploader.files[0]) );
             $('.profile-pic').css("width","300px");
@@ -423,4 +423,4 @@ function Profile() {
     );
   }
   
-  export default Profile;
+  export default App;
