@@ -135,8 +135,8 @@ public class User {
 	// -F must be mentioned before any parameter for the reason of multipartness or whatever
 
 	
-	@PostMapping("/upload")
-    public JsonFormats uploadFiles(@RequestParam("files") MultipartFile[] files, @RequestParam("username") String username) {
+	@PostMapping("/upload/{username}")
+    public JsonFormats uploadFiles(@RequestParam("files") MultipartFile[] files, @PathVariable("username") String username) {
         try {
         	
         	String imageType = ".png";
