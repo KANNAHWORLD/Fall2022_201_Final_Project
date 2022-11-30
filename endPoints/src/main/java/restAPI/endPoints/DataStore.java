@@ -1175,14 +1175,16 @@ public class DataStore
 				retJson.ServerMessage = "User Profile Found";
 				retJson.statusCode = 200;
 			}
-			else
-			{
-				retJson.ServerMessage = "User profile does not exist";
-				retJson.statusCode = 404;
-			}
+//			else
+//			{
+//				retJson.ServerMessage = "User profile does not exist";
+//				retJson.statusCode = 404;
+//			}
 		} catch (SQLException e1) {
 			System.out.println("Error in DataStore.authorize function");
 			e1.printStackTrace();
+			retJson.ServerMessage = "User profile does not exist";
+			retJson.statusCode = 404;
 		}
 
 		return retJson;

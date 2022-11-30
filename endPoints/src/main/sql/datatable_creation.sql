@@ -21,8 +21,8 @@ password varchar(255)
 );
 
 INSERT INTO UserLogin
-VALUES ("Sid", "Bansal", "sid_bansal", "I_love_youg_and_it's_a_problem"),
-("Sanjana", "Ilango", "sanjana123", "aditya <3");
+VALUES ("Sid", "Bansal", "sid_bansal", "yougy"),
+("Sanjana", "Ilango", "sanjana123", "hello");
 
 CREATE TABLE UserInfo (
 username varchar(255),
