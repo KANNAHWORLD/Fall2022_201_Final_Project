@@ -109,12 +109,12 @@ function LogIn(){
             <h2>Login to Your Account</h2>
             <form className="login-form" onSubmit={validateInput}>
                 <label className="label2" htmlFor="email">Email</label>
-                <input classname = "input2" value={email} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder=" email@gmail.com" id="email" name="email"/>
+                <input className = "Form-Input" value={email} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder=" email@gmail.com" id="email" name="email"/>
                 <p className="error-message">{formError.email}</p>
                 <label className="label2" htmlFor="password">Password</label>
-                <input classname = "input2" value={password} onChange={(e)=>setPassword(e.target.value)} type="password" placeholder=" ********" id="password" name="password"/>
+                <input className = "Form-Input" value={password} onChange={(e)=>setPassword(e.target.value)} type="password" placeholder=" ********" id="password" name="password"/>
                 <p className="error-message">{formError.password}</p>
-                <button classname = "button2" type="submit">Login</button>
+                <button className = "button2" type="submit">Login</button>
             </form>
             <Link to={'/SignUp'} className="link-btn" >Don't have an account? Register here!</Link>
         </div>

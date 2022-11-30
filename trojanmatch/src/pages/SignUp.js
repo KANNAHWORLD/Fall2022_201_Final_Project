@@ -1,7 +1,7 @@
 import React, {useState} from "react";
 import axios from 'axios';
 import {Link, useNavigate} from 'react-router-dom';
-import './SignUp.css'
+//import './LogIn.css'
 
 function SignUp(){
     //const navigate = useNavigate();
@@ -114,15 +114,15 @@ function SignUp(){
                 <h2>Register</h2>
             <form className="register-form" onSubmit={validateInput}>
                 <label htmlFor="name">Email</label>
-                <input value={name} onChange={(e)=>setName(e.target.value)} type="text" placeholder=" name" id="name" name="name"/>
+                <input className = "Form-Input" value={name} onChange={(e)=>setName(e.target.value)} type="text" placeholder=" name" id="name" name="name"/>
                 <p className="error-message">{formError.name}</p>
                 <label htmlFor="password">Password</label>
-                <input value={password} onChange={(e)=>setPassword(e.target.value)} type="password" placeholder=" ********" id="password" name="password"/>
+                <input className = "Form-Input" value={password} onChange={(e)=>setPassword(e.target.value)} type="password" placeholder=" ********" id="password" name="password"/>
                 <p className="error-message">{formError.password}</p>
                 <label htmlFor="cpassword">Confirm Password</label>
-                <input value={cpassword} onChange={(e)=>setCPassword(e.target.value)} type="password" placeholder=" ********" id="cpassword" name="cpassword"/>
+                <input className = "Form-Input" value={cpassword} onChange={(e)=>setCPassword(e.target.value)} type="password" placeholder=" ********" id="cpassword" name="cpassword"/>
                 <p className="error-message">{formError.cpassword}</p>
-                <button type="submit">Create Account</button>
+                <button className = "button2" type="submit">Create Account</button>
             </form>
             <Link  to={'/LogIn'} className="link-btn">Already have an account? Login here!</Link>
         </div>

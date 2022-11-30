@@ -10,10 +10,29 @@
   font-family: 'Comfortaa';
 }
 
-.auth-form-container, .login-form, .register-form{
+.auth-form-container{
   font-family: 'Comfortaa';
   display: flex;
   flex-direction:column;
+  text-align: center;
+  margin-top: 175px;
+  align-items: center;
+}
+
+.login-form{
+  font-family: 'Comfortaa';
+  display: flex;
+  flex-direction:column;
+  text-align: center;
+  width: 800px;
+}
+
+.register-form{
+  font-family: 'Comfortaa';
+  display: flex;
+  flex-direction:column;
+  text-align: center;
+  width: 800px;
 }
 
 /*
@@ -24,26 +43,27 @@
 }
 */
 
-label{
+.label2{
   text-align: left;
   font-family: 'Comfortaa';
   padding:0.25rem 0;
 }
 
-input{
+.Form-Input{
   font-family: 'Comfortaa';
   margin: 0.25rem 0;
   padding: 0.5rem 0;
   border-color: #707070;
   border-radius:10px;
+  padding-left: 10px;
 }
 
-button{
+.button2{
   font-family: 'Comfortaa';
   border:none;
   margin: 0.5rem 0;
   color: white;
-  background-color: #BD2031;
+  background-color: #CD5C5C;
   padding: 10px;
   border-radius:10px;
   cursor: pointer;
@@ -61,6 +81,6 @@ button{
   font-family: 'Comfortaa';
   padding: 0.1rem 0;
   margin: .2rem 0;
-  color: #BD2031;
+  color: #CD5C5C;
   text-align: left;
 }
