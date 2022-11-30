@@ -999,7 +999,7 @@ public class DataStore
 				prof.UserName = rs.getString("username");
 				retSet.add(prof);
 			}
-		} catch (SQLException e) {
+		} catch (Exception e) {
 			System.out.println("There was an error");
 			e.printStackTrace();
 		}
