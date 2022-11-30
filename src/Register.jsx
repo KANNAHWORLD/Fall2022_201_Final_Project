@@ -4,18 +4,18 @@ import {Link, useNavigate} from 'react-router-dom';
 
 export const Register=(props)=>{
     //const navigate = useNavigate();
-    const[email, setEmail]=useState('');
+    const[name, setName]=useState('');
     const[password,setPassword]=useState('');
     const[cpassword,setCPassword]=useState('');
     const [formError, setFormError] = useState({
-        email: "",
+        name: "",
         password: "",
         cpassword: "",
       });
     
     const handleSubmit=(e)=>{
         e.preventDefault();
-        console.log(email);
+        console.log(name);
         //move to form page
     }
         
@@ -26,24 +26,24 @@ export const Register=(props)=>{
     const validateInput=(e)=>{
         e.preventDefault();
         let inputError={
-            email:"",
+            name:"",
             password:"",
             cpassword:"",
         };
 
-        if(!email && !password){
+        if(!name && !password){
             setFormError({
                 ...inputError,
-                email: "Enter valid email address",
+                name: "Enter valid email address",
                 password: "Enter a valid password",
               });
               return
         }
 
-        else if (!email) {
+        else if (!name) {
             setFormError({
               ...inputError,
-              email: "Enter valid email address",
+              name: "Enter valid email address",
             });
             return
         }
@@ -71,7 +71,7 @@ export const Register=(props)=>{
         }
         else{
           
-          var url = 'http://34.130.1.66:8082/CPE/' + email;
+          var url = 'http://34.130.1.66:8082/CPE/' + name;
           const result = axios.get(url,
           {
             headers: {
@@ -112,9 +112,9 @@ export const Register=(props)=>{
         <div className="auth-form-container">
                 <h2>Register</h2>
             <form className="register-form" onSubmit={validateInput}>
-                <label htmlFor="email">Email</label>
-                <input value={email} onChange={(e)=>setEmail(e.target.value)} type="email" placeholder=" name@gmail.com" id="email" name="email"/>
-                <p className="error-message">{formError.email}</p>
+                <label htmlFor="name">Email</label>
+                <input value={name} onChange={(e)=>setName(e.target.value)} type="text" placeholder=" name" id="name" name="name"/>
+                <p className="error-message">{formError.name}</p>
                 <label htmlFor="password">Password</label>
                 <input value={password} onChange={(e)=>setPassword(e.target.value)} type="password" placeholder=" ********" id="password" name="password"/>
                 <p className="error-message">{formError.password}</p>
