@@ -18,7 +18,7 @@ function Match(){
         
       }
       else{
-        fetchImage('http://34.130.1.66:8082/user/getImg/' + data.UserName);
+        fetchImage('http://34.130.1.66:8082/user/getImg/' + state.username);
       }
     }
       
