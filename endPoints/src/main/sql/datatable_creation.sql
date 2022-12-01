@@ -48,8 +48,8 @@ username varchar(255),
 PreferenceList varchar(255));
 
 INSERT INTO UserPreferenceList
-VALUES ("sid@gmail.com", "sanjana123,10"),
-("sanjana@bing.com", "sid_bansal,10");
+VALUES ("sid@gmail.com", "sanjana@bing.com,10"),
+("sanjana@bing.com", "sid@gmail.com,10");
 
 
 #####
